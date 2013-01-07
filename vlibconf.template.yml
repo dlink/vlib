@@ -1,0 +1,21 @@
+# vlib config template
+# OS Environement Variables are Allowed
+
+database:
+   engine: mysql
+   host: X
+   db: X
+   user: X
+   passwd: X
+   dictcursor: true
+
+logging:
+   filename: X
+   level: DEBUG
+
+email:
+   server  : X
+   username: X
+   password: X
+   fromaddr: X
+

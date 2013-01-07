@@ -1,0 +1,21 @@
+# vlib Test config 
+# OS Environement Variables are Allowed
+
+database:
+   engine: mysql
+   host: localhost
+   db: vlibtests
+   user: vlibtests
+   passwd: bogangles
+   dictcursor: true
+
+logging:
+   filename: X
+   level: DEBUG
+
+email:
+   server  : X
+   username: X
+   password: X
+   fromaddr: X
+
