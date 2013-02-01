@@ -1,5 +1,4 @@
 #!/usr/local/bin/python
-# $Id: utils.py 2893 2012-01-04 16:05:14Z rlowe $
 
 import os
 from datetime import datetime
@@ -144,4 +143,20 @@ def format_date(d):
     Return a string in the form of "mm/dd/yyyy"
     '''
     return d.strftime("%m/%d/%Y")
+
+def table2csv(data):    
+    '''Give a LIST or TUPLE
+       Return: A CSV table as STRING or the input data if not LIST or TUPLE
+    '''
+    o = ''
+    if isinstance(data, (list, tuple)):
+        if isinstance(data[0], (list, tuple)):
+            for row in data:
+                o +=  ",".join(map(str, row))
+                o += '\n'
+        else:
+            o += "\n".join(map(str, data))
+    else:
+        return data
+    return o
 
