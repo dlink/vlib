@@ -1,9 +1,10 @@
--- Uncomment this line, if database already exists.
-drop database vlibtests; 
+-- vlib tests data creation script
 
-create database vlibtests;
+-- May need root to perform these:
 
-grant all on vlibtests.* to vlibtests@localhost identified by 'bogangles';
+-- drop database vlibtests; -- if needed
+-- create database vlibtests;
+-- grant all on vlibtests.* to vlibtests@localhost identified by 'bogangles';
 
 create table vlibtests.disciplines (
     discipline_id   int(10)         unsigned not null,
