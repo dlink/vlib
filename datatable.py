@@ -21,7 +21,6 @@ class DataTable(object):
         self.tablename = tablename
 
         #self.autocommit = autocommit
-        #self._initTableColumns()
 
         self.columns   = [] #self.table_columns 
         self.filters   = []
@@ -327,10 +326,11 @@ class DataTable(object):
                 "Unable to delete row from %s: %s" % (self.tablename, e))
         return rowcount
     
-    def _initTableColumns (self):
+    def columnDefs(self):
         '''Read table metadata information from database
-        Sets self.table_columns,
-             self.column_types
+        return LIST of the form
+        [{'name': 'adoption_id', 'type': 'int(10) unsigned'},
+         {'name': 'professor_id', 'type': 'int(10) unsigned'}, ... ]
         '''
         
         try:
@@ -339,13 +339,17 @@ class DataTable(object):
             raise DataTableError(e)
 
         #$table_alias = self.getAlias() - table alias to come
+        columnDefs = []
         table_columns = []
         column_types  = []
         for row in table:
+            columnDefs.append({'name': row['Field'],
+                               'type': row['Type']})
             table_columns.append(row['Field'])
             column_types.append(row['Type'])
         self.table_columns = table_columns
-        self.column_types  = column_types                    
+        self.column_types  = column_types           
+        return columnDefs
         #if self.use_lowercase_names:
         #    self.table_columns = [c.lower() for c in self.table_columns]
         # '''
@@ -360,6 +364,6 @@ def sqlize(s):
 
 #import db
 #db_ = db.singletonFactory.create()
-#dt = DataTable(db_, 'parties')
+#dt = DataTable(db_, 'adoptions')
 #dt.setFilters('party_id=1')
 #print dt.getTable()
