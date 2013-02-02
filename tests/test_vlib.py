@@ -8,19 +8,38 @@ import os
 import unittest
 import sys
 
-import db
+#import db
 
 DEBUG = 0
 
-TEST_NAMES = ('All', 'Db', 'Shell')
+TEST_NAMES = ('All', 'DataTable', 'Db', 'Shell')
+
 
 # Fixtures
-# none
+COLUMNDEF_FILENAME='fixtures/datatable_columndefs'
+ 
+class TestDataTable(unittest.TestCase):
+    '''Test DataTable'''
+
+    def setUp(self):
+        import db
+        from datatable import DataTable
+        
+        self.db = db.Factory().create()
+        self.datatable = DataTable(self.db, 'disciplines')
+
+    def test_columnDefs(self):
+        results = self.datatable.columnDefs()
+        new = '\n'.join(map(str, results))
+        old = open(COLUMNDEF_FILENAME, 'r').read()
+        self.assertEqual(new, old)
 
 class TestDb(unittest.TestCase):
     '''Test Db'''
 
     def setUp(self):
+        import db
+
         self.db = db.Factory().create()
 
     def test_query(self):
