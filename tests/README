@@ -1,0 +1,32 @@
+How to run tests
+
+I. INITIAL SET UP
+
+   A. Create vlibtests Database: (ONLY ONCE)
+
+   1. Create database vlibtests (may need root)
+   2. Grant all to vlibtests/bogangles (may need root)
+   3. Load data from create_vlibtests.sql
+
+   Like this:
+     $ mysql
+     mysql> create database vlibtests;
+     mysql> grant all on vlibtests.* to vlibtests@localhost 
+         ->    identified by 'bogangles';
+     mysql> quit
+     $ cat create_vlibtests.sql | mysql -uvlibtests -pbogangles vlibtests
+
+
+   B. set PYTHONPATH
+  
+   $ export PYTHONPATH=$HOME/vlib                     # Or wherever it is.
+
+   C. set VLIBCONF
+  
+   $ export VLIBCONF=$HOME/vlib/tests/testconf.yml    # Or wherever it is.
+
+
+II. Run test
+
+   $ cd $HOME/vlib/tests
+   $ ./test_vlibs.py All   # With no args for help
