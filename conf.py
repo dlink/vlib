@@ -5,7 +5,7 @@ import re
 import yaml
 
 # Set this to whatever you want.
-CONF_ENV_VAR = 'VLIBCONF'
+CONF_ENV_VAR = 'VCONF'
 
 class ConfError(Exception): pass
 
