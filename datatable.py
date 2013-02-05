@@ -359,7 +359,8 @@ def sqlize(s):
     This makes strings with single quotes in them suitable for
     insertion into sql databases.'''
     if isinstance(s, (str, unicode)):
-        s = s.encode('latin-1','replace').replace("'", "''")
+        #s = s.encode('latin-1','replace').replace("'", "''")
+        s = s.replace("'", "''")
     return s
 
 #import db
