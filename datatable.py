@@ -361,6 +361,7 @@ def sqlize(s):
     if isinstance(s, (str, unicode)):
         #s = s.encode('latin-1','replace').replace("'", "''")
         s = s.replace("'", "''")
+        s = s.replace('\\', '\\\\')
     return s
 
 #import db
