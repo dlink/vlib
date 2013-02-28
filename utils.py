@@ -160,3 +160,106 @@ def table2csv(data):
         return data
     return o
 
+def formatdict(d, width=console_width(), indent=0, keylen=0, color=False):
+    '''Recursively format contents of dictionaries in sorted tabular order.
+       Optionally a certain width, indented, and/or a specific key length.
+
+       >>> utils.formatdict(batch_item)
+               active: 1
+             batch_id: 3250
+             on_press: None
+             order_id: 2007372
+            page_list: None
+                  qty: 2
+         removed_date: None
+    '''
+
+    key_color = lightgreen
+    val_color = lambda v: \
+        lightcyan(v) if isinstance(v, (int, bool, type(None))) or \
+        str(v).isdigit() else darkcyan(v)
+    
+    keys, values = d.keys(), d.values()
+    key_lens = [len(str(k)) for k in keys]
+    val_lens = [len(str(v)) for v in values]
+    if not keylen:
+        keylen = max(key_lens or [0])
+    total_len = sum(key_lens + val_lens) + len(key_lens) * 4
+    keys.sort()
+    out = ''
+    if total_len < width:
+        for k in keys:
+            if isinstance(d[k], dict):
+                d[k] = formatdict(d[k], width - keylen, keylen, 
+                                  color=color).rstrip()
+        if color:
+            out += '{%s}\n' % ', '.join(['%s: %s' % (key_color(k), 
+                                                     val_color(d[k]))
+                                         for k in keys])
+        else:
+            out += '{%s}\n' % ', '.join(['%s: %s' % (k, d[k]) for k in keys])
+        return out
+    if indent:
+        out += '\n'
+    for k in keys:
+        if isinstance(d[k], dict):
+            key = str(k).rjust(keylen)
+            if color:
+                key = key_color(key)
+            out += '%s%s: ' % (' ' * indent, key)
+            out += formatdict(d[k], width - keylen, keylen + indent + 2,
+                              color=color)
+        elif isinstance(d[k], list):
+            key = str(k).rjust(keylen)
+            if color:
+                key = key_color(key)
+            out += '%s%s: ' % (' ' * indent, key)
+            ind = 0
+            for v in d[k] or ['']:
+                out += '%s- %s\n' % (' ' * ind, val_color(v) if color else v)
+                ind = keylen + indent + 2
+        else:
+            key = str(k).rjust(keylen)
+            val = d[k]
+            if color:
+                key = key_color(key)
+                val = val_color(val)
+            line = '%s: %s\n' % (key, val)
+            out += word_wrap(line, width, indent, keylen + indent + 2)
+    return out
+
+def word_wrap(string, width, ind1=0, ind2=0):
+    '''Wrap long lines of text.
+       Prefer spaces or non-alpha-numeric break points.
+
+            ind1 = initial indentation
+            ind2 = hanging indentation
+    '''    
+    lines = (' ' * ind1 + string).split('\n')
+    newstring = ''
+    for string in lines:
+        if len(string) > width:
+            for _ in range(10000): 
+                # find position of nearest whitespace char to the left of 'width'
+                marker = width - 1
+                while not string[marker].isspace() and marker >= 0:
+                    marker -= 1
+                if marker + 1 == ind2:  # no space breaks: try non-word char
+                    marker = width - 1
+                    while string[marker].isalnum() and marker >= 0:
+                        marker -= 1
+                    marker += 1         # put break char at end of line
+                    if marker == ind2:  # no nice break points: break on char
+                        marker = width - 1
+                # no room to wrap - bail out
+                if len(string) > marker:   # this breaks things sometimes
+                    break   # relying on counter to avoid inf looping instead
+                # remove line from original string and add it to the new string
+                newstring += string[:marker] + '\n'
+                string = ' ' * ind2 + string[marker:].lstrip(' ')
+                # break out of loop when finished
+                if len(string) <= width:
+                    break
+        newstring += string + '\n'
+    return newstring[:-1]
+
