@@ -88,7 +88,13 @@ class DataTable(object):
         if isinstance(filters, (str, unicode)):
             filters = [filters]
         elif isinstance(filters, dict):
-            filters = ["%s = '%s'" % (k, sqlize(v)) for k,v in filters.items()]
+            filters2 = []
+            for k,v in filters.items():
+                if v:
+                    filters2.append("%s = '%s'" % (k, sqlize(v)))
+                else:
+                    filters2.append("%s is null" % k)
+            filters = filters2
         self.filters = filters
 
     def setOrderBy (self, order_by):
