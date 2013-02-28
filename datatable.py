@@ -82,10 +82,13 @@ class DataTable(object):
         
         Examples: dobj.setFilters ("email like 'fred%'")
                   dobj.setFilters (["email like 'fred%'", "name = 'Fred'"])
+                  dobj.setFilters ({'email': 'fred@foo.bar', 'name': 'Fred'})
         '''
 
         if isinstance(filters, (str, unicode)):
             filters = [filters]
+        elif isinstance(filters, dict):
+            filters = ["%s = '%s'" % (k, sqlize(v)) for k,v in filters.items()]
         self.filters = filters
 
     def setOrderBy (self, order_by):
