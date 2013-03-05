@@ -271,5 +271,5 @@ def valid_email(email):
     import re
     if email==None:
         return False
-    return re.match(r"^[a-zA-Z0-9._%-+]+\@[a-zA-Z0-9._%-]+\.[a-zA-Z]{2,}$",
+    return re.match(r"^[a-zA-Z0-9._%+-]+\@[a-zA-Z0-9._%-]+\.[a-zA-Z]{2,}$",
                     email) != None
