@@ -263,3 +263,13 @@ def word_wrap(string, width, ind1=0, ind2=0):
         newstring += string + '\n'
     return newstring[:-1]
 
+def valid_email(email):
+    '''Given an email address
+       Return whether it is in valid format as BOOLEAN
+       Credit: Ian K Rolfe, http://ianrolfe.livejournal.com/39361.html
+    '''
+    import re
+    if email==None:
+        return False
+    return re.match(r"^[a-zA-Z0-9._%-+]+\@[a-zA-Z0-9._%-]+\.[a-zA-Z]{2,}$",
+                    email) != None
