@@ -2,13 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import os
-#import re
-#from StringIO import StringIO
-#import time
 import unittest
 import sys
-
-#import db
 
 DEBUG = 0
 
