@@ -55,9 +55,21 @@ def console_width():
     # sensible default
     return 80
 
+def echoif(switch):
+    '''Decorator - calls echoized
+       eq.:
+         @echoif(DEBUG_CALLSTACK)
+         class OrderPricing(objec):
+            ...
+    '''
+    if switch:
+        return echoized
+    return lambda unchanged: unchanged
+
 
 def echoized(func_or_cls):
-    ''' Echos a function's signature prior to evaluating it, of does the
+    """Decorator
+       Echos a function's signature prior to evaluating it, of does the
         same for all methods of a class. 
 
         ISSUES:
@@ -65,7 +77,14 @@ def echoized(func_or_cls):
           arg names, and self is not distinguished from other args.
           
           (or in conjunction with @cached)
-    '''
+          
+        eq.:
+          op = OrderPricing()
+          op = echoized(OrderPricing)()
+
+          e = Editions(nid=nid)
+          e = echoized(Editions)(nid=nid)
+    """
     from inspect import getargspec, isclass, ismethod
     def newf(*args, **kwds):
         'Echos function signature'
