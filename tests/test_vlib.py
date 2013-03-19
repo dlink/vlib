@@ -7,12 +7,25 @@ import sys
 
 DEBUG = 0
 
-TEST_NAMES = ('All', 'DataTable', 'Db', 'Shell')
+TEST_NAMES = ('All', 'Conf', 'DataTable', 'Db', 'Shell')
 
 
 # Fixtures
 COLUMNDEF_FILENAME='fixtures/datatable_columndefs'
  
+class TestConf(unittest.TestCase):
+    '''Test Conf'''
+    
+    def setUp(self):
+        import conf
+        self.conf = conf.Factory.create().data
+        
+    def test_getvar(self):
+        self.assertEqual(self.conf['database']['engine'], 'mysql')
+        
+    def test_getvar_withenvvar(self):
+        self.assertEqual(self.conf['shell'], '/bin/bash')
+        
 class TestDataTable(unittest.TestCase):
     '''Test DataTable'''
 

@@ -19,3 +19,4 @@ email:
    password: X
    fromaddr: X
 
+shell: $SHELL
