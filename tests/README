@@ -21,9 +21,9 @@ I. INITIAL SET UP
   
    $ export PYTHONPATH=$HOME/vlib                     # Or wherever it is.
 
-   C. set VLIBCONF
+   C. set VCONF
   
-   $ export VLIBCONF=$HOME/vlib/tests/testconf.yml    # Or wherever it is.
+   $ export VCONF=$HOME/vlib/tests/testconf.yml    # Or wherever it is.
 
 
 II. Run test
