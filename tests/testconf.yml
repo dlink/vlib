@@ -20,3 +20,4 @@ email:
    fromaddr: X
 
 shell: $SHELL
+secret: toyboat\$

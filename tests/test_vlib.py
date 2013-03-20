@@ -14,6 +14,7 @@ TEST_NAMES = ('All', 'Conf', 'DataTable', 'Db', 'Shell')
 COLUMNDEF_FILENAME='fixtures/datatable_columndefs'
 DATABASE_ENGINE='mysql'
 SHELL='/bin/bash'
+SECRET='toyboat$'
 
 class TestConf(unittest.TestCase):
     '''Test Conf'''
@@ -27,6 +28,9 @@ class TestConf(unittest.TestCase):
         
     def test_getvar_withenvvar(self):
         self.assertEqual(self.conf['shell'], SHELL)
+
+    def test_getvar_withescaping(self):
+        self.assertEqual(self.conf['secret'], SECRET)
         
 class TestDataTable(unittest.TestCase):
     '''Test DataTable'''
