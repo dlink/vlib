@@ -42,7 +42,9 @@ def expandEnvVars(data):
         if isinstance(v, dict):
             v = expandEnvVars(v)
         elif isinstance(v, str):
-            if '$' in v:
+            if '\$' in v: # unescape \$
+                v = v.replace('\$', '$')
+            elif '$' in v:
                 envvar = re.sub(r'.*\$([^/.]*).*', r'\1', v)
                 envvar_val = os.getenv(envvar, 'Uknown_env_var:%s' % envvar)
                 v = re.sub('\$[^/.]*', envvar_val, v)
