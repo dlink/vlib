@@ -294,3 +294,22 @@ def valid_email(email):
     regex2 = r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:[a-zA-Z]{2}|com|org|net|edu|gov|mil|biz|info|mobi|name|aero|asia|jobs|museum)\b"
 
     return re.match(regex2, email) != None
+
+def pretty(X):
+    '''Return X formated nicely for the console'''
+    o = ''
+    if isinstance(X, (list, tuple)):
+        if isinstance(X[0], (list, tuple)):
+            for row in X:
+                o +=  ",".join(map(str, row)) + '\n'
+        else:
+            o += "\n".join(map(str, X)) + '\n'
+    elif isinstance(X, dict):
+        keys = sorted(X.keys())
+        for k in keys:
+            o +=  "%s: %s" % (k, X[k]) + '\n'
+    else:
+        o += str(X)
+    return o
+
+    
