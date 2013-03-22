@@ -134,8 +134,8 @@ def shift(alist):
 class Str2DateError(Exception): pass
 
 def str2datetime(s):
-    """Convert str in the form of "2010-11-11 17:39:52" to a                    
-       datetime.datetime Object                                                 
+    """Convert str in the form of "2010-11-11 17:39:52" to a
+       datetime.datetime Object
     """
     from datetime import datetime
     try:
