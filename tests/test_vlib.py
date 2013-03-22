@@ -7,7 +7,7 @@ import sys
 
 DEBUG = 0
 
-TEST_NAMES = ('All', 'Conf', 'DataTable', 'Db', 'Shell')
+TEST_NAMES = ('All', 'Conf', 'DataTable', 'Db', 'Shell', 'Utils')
 
 
 # Fixtures
@@ -69,6 +69,43 @@ class TestShell(unittest.TestCase):
     def test_ls(self):
         output = self.shell.cmd('ls')
 
+class TestUtils(unittest.TestCase):
+    
+    def setUp(self):
+        pass
+    
+    def test_pretty_str(self):
+        import utils
+        str = 'This is a string'
+        self.assertEqual(str, utils.pretty(str))
+        
+    def test_pretty_list(self):
+        import utils
+        Astr = '''ennie
+meanie
+mightie
+'''
+        A = ['ennie', 'meanie', 'mightie']
+        self.assertEqual(Astr, utils.pretty(A))
+        
+    def test_pretty_dict(self):
+        import utils
+        Dstr = '''color: blue
+shape: square
+texture: groovy
+'''
+        D = {'shape': 'square', 'texture': 'groovy', 'color': 'blue'}
+        self.assertEqual(Dstr, utils.pretty(D))
+
+    def test_pretty_list_of_lists(self):
+        import utils
+        AAstr = '''a,b,c
+d,e,f
+g,h,i
+'''
+        AA = [['a', 'b', 'c'], ['d', 'e', 'f'], ['g','h', 'i']]
+        self.assertEqual(AAstr, utils.pretty(AA))
+        
 def syntax():
     progname = os.path.basename(sys.argv[0])
     print
