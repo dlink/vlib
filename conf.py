@@ -10,7 +10,29 @@ CONF_ENV_VAR = 'VCONF'
 class ConfError(Exception): pass
 
 class Conf(object):
+    '''Configuration Module
     
+       Usage:
+       
+          # To create a singleton instance of configuration data
+          # found in a yaml file pointed to by an environment
+          # variable called VCONF
+          
+          from vlib import conf
+          myconf = conf.Factory.create().data
+
+          # Print configuration data, from a Yaml file that looks
+          # like this:
+          #
+          # database:
+          #    engine: mysql
+          #    host: localhost
+          #    db: vlibtests
+          #    user: vlibtests
+          #    passwd: bogangles
+
+          print myconf['database']['hostname']
+    '''
     def __init__(self):
         try:
             filename = os.environ[CONF_ENV_VAR]
