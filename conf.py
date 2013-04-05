@@ -4,6 +4,8 @@ import os
 import re
 import yaml
 
+from odict import odict
+
 # Set this to whatever you want.
 CONF_ENV_VAR = 'VCONF'
 
@@ -31,7 +33,8 @@ class Conf(object):
           #    user: vlibtests
           #    passwd: bogangles
 
-          print myconf['database']['hostname']
+          print myconf.database.hostname
+          
     '''
     def __init__(self):
         try:
@@ -58,8 +61,10 @@ class Conf(object):
         return '\n'.join(o)
 
 def expandEnvVars(data):
-    '''Expand OS Environement Variables'''
-    data2 = {}
+    '''Expand OS Environement Variables
+       Also returns data as an `odict`
+    '''
+    data2 = odict()
     for k, v in data.items():
         if isinstance(v, dict):
             v = expandEnvVars(v)
