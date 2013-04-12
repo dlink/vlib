@@ -32,6 +32,7 @@ class Db (object):
         self.debug_sql  = DEBUG_SQL
         self.cursor = None
         self.lastrowid_store = None
+        self.rowcount_store = None
 
         # get port number:
         params["port"] = params.get('port', PORT)
@@ -75,6 +76,7 @@ class Db (object):
         try:
             rv = self.cursor.execute(sql)
             self.lastrowid_store = self.cursor.lastrowid
+            self.rowcount_store = self.cursor.rowcount
             return rv
         except MySQLdb.OperationalError, e:
             from datetime import datetime
@@ -119,7 +121,11 @@ class Db (object):
     @property
     def lastrowid(self):
         return self.lastrowid_store
-
+    
+    @property
+    def rowcount(self):
+        return self.rowcount_store
+    
     def __del__(self):
         if DEBUG:
             print "db.__del__()"
