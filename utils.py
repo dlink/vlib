@@ -139,8 +139,7 @@ def str2datetime(s):
     """
     from datetime import datetime
     try:
-        return datetime(*map(int, (s[0:4], s[5:7], s[8:10], s[11:13],
-                                   s[14:16], s[17:19])))
+        return datetime.strptime(s, "%Y-%m-%d %H:%M:%S")
     except Exception, e:
         raise Str2DateError('Unable to convert "%s" to datetime: %s: %s'
                             % (s, e.__class__.__name__, e))
