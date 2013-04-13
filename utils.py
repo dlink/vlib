@@ -133,13 +133,13 @@ def shift(alist):
 
 class Str2DateError(Exception): pass
 
-def str2datetime(s):
+def str2datetime(s, format="%Y-%m-%d %H:%M:%S"):
     """Convert str in the form of "2010-11-11 17:39:52" to a
        datetime.datetime Object
     """
     from datetime import datetime
     try:
-        return datetime.strptime(s, "%Y-%m-%d %H:%M:%S")
+        return datetime.strptime(s, format)
     except Exception, e:
         raise Str2DateError('Unable to convert "%s" to datetime: %s: %s'
                             % (s, e.__class__.__name__, e))
