@@ -97,6 +97,9 @@ class Factory(object):
 
 Factory = Factory()
 
+def getInstance():
+    return Factory.create().data
+
 if __name__ == '__main__':
     conf = Conf()
     print conf.toStr()

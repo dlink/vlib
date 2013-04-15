@@ -21,16 +21,16 @@ class TestConf(unittest.TestCase):
     
     def setUp(self):
         import conf
-        self.conf = conf.Factory.create().data
+        self.conf = conf.getInstance()
         
     def test_getvar(self):
-        self.assertEqual(self.conf['database']['engine'], DATABASE_ENGINE)
+        self.assertEqual(self.conf.database.engine, DATABASE_ENGINE)
         
     def test_getvar_withenvvar(self):
-        self.assertEqual(self.conf['shell'], SHELL)
+        self.assertEqual(self.conf.shell, SHELL)
 
     def test_getvar_withescaping(self):
-        self.assertEqual(self.conf['secret'], SECRET)
+        self.assertEqual(self.conf.secret, SECRET)
         
 class TestDataTable(unittest.TestCase):
     '''Test DataTable'''
