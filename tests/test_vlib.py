@@ -30,7 +30,7 @@ class TestConf(unittest.TestCase):
         self.assertEqual(self.conf.shell, SHELL)
 
     def test_getvar_withescaping(self):
-        self.assertEqual(self.conf.secretx, SECRET)
+        self.assertEqual(self.conf.secret, SECRET)
         
 class TestDataTable(unittest.TestCase):
     '''Test DataTable'''
