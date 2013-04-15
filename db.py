@@ -180,3 +180,5 @@ class SingletonFactory(object):
 # Use this instance to create singleton Db instances:
 singletonFactory = SingletonFactory()   
 
+def getInstance():
+    return singletonFactory.create()

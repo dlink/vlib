@@ -30,7 +30,7 @@ class TestConf(unittest.TestCase):
         self.assertEqual(self.conf.shell, SHELL)
 
     def test_getvar_withescaping(self):
-        self.assertEqual(self.conf.secret, SECRET)
+        self.assertEqual(self.conf.secretx, SECRET)
         
 class TestDataTable(unittest.TestCase):
     '''Test DataTable'''
@@ -39,7 +39,7 @@ class TestDataTable(unittest.TestCase):
         import db
         from datatable import DataTable
         
-        self.db = db.Factory().create()
+        self.db = db.getInstance()
         self.datatable = DataTable(self.db, 'disciplines')
 
     def test_columnDefs(self):
@@ -54,7 +54,7 @@ class TestDb(unittest.TestCase):
     def setUp(self):
         import db
 
-        self.db = db.Factory().create()
+        self.db = db.getInstance()
 
     def test_query(self):
         sql = 'select book_name from books where book_id = 1'
