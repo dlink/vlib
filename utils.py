@@ -323,3 +323,25 @@ def pretty(X):
     return o
 
     
+def any_in(items, thing):
+    for i in items:
+        if i in thing:
+            return True
+    return False
+
+def list2csv(data):
+    '''Given a Table of data as a LIST of LISTs
+       Return in CSV format as a STR
+    '''
+    o = ''
+    for row in data:
+        row2 = []
+        for c in row:
+            if isinstance(c, str) and any_in(',"\'', c):
+                # put quotes on strings
+                row2.append('"%s"' % c)
+            else:
+                row2.append(c)
+        o += ','.join(map(str, row2)) + '\n'
+    return o
+            
