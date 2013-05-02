@@ -73,11 +73,11 @@ class Db (object):
             self.cursor.close()
             self.cursor = None
 
-    def _execute(self, sql):
+    def _execute(self, sql, params=()):
         if self.debug_sql: 
             print "SQL:", sql
         try:
-            rv = self.cursor.execute(sql)
+            rv = self.cursor.execute(sql, params)
             self.lastrowid_store = self.cursor.lastrowid
             self.rowcount_store = self.cursor.rowcount
             return rv
@@ -85,24 +85,24 @@ class Db (object):
             from datetime import datetime
             self.connect(self.params)
             self.open_cursor()
-            rv = self.cursor.execute(sql)
+            rv = self.cursor.execute(sql, params)
             self.lastrowid_store = self.cursor.lastrowid
             return rv
         except Exception, e:
             raise
         
-    def query(self, sql, from_trans=False):
-        data = None
+    def query(self, sql, from_trans=False, params=()):
         try:
             # Cursor may be set in the startTransaction() call.
             if not from_trans:
                 self.open_cursor()
-            rv = self._execute(sql)
+            self._execute(sql, params=params)
             data = self.cursor.fetchall()
-            return data
         finally:
             if not from_trans:
                 self.close_cursor()
+
+        return data
 
     def startTransaction(self):
         self.open_cursor()
