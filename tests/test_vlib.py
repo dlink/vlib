@@ -11,7 +11,6 @@ TEST_NAMES = ('All', 'Conf', 'DataTable', 'Db', 'Shell', 'Utils')
 
 
 # Fixtures
-COLUMNDEF_FILENAME='fixtures/datatable_columndefs'
 DATABASE_ENGINE='mysql'
 SHELL='/bin/bash'
 SECRET='toyboat$'
@@ -43,10 +42,20 @@ class TestDataTable(unittest.TestCase):
         self.datatable = DataTable(self.db, 'disciplines')
 
     def test_columnDefs(self):
-        results = self.datatable.columnDefs()
-        new = '\n'.join(map(str, results))
-        old = open(COLUMNDEF_FILENAME, 'r').read()
-        self.assertEqual(new, old)
+        expected = [
+            {'type': 'int(10) unsigned', 'name': 'discipline_id'},
+            {'type': 'varchar(30)', 'name': 'code'},
+            {'type': 'varchar(45)', 'name': 'name'},
+            {'type': 'varchar(255)', 'name': 'description'},
+            {'type': 'int(10) unsigned', 'name': 'active'},
+            {'type': 'timestamp', 'name': 'last_updated'},
+        ]
+        sort = lambda r: sorted(r, key=lambda x: x['name'])
+        results = sort(self.datatable.columnDefs())
+        actual = sort(results)
+        expected = sort(expected)
+        for old, new in zip(expected, actual):
+            self.assertDictEqual(old, new)
 
 class TestDb(unittest.TestCase):
     '''Test Db'''

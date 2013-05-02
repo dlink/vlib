@@ -193,43 +193,27 @@ class DataTable(object):
         if DEBUG: print __name__, self.tablename, '%sRow()' % sql_cmd
         if len(record) < 1:
             raise DataTableError ('Record to insert is blank')
-        columnlist = []
-        valuelist  = []
-        for column in record:
-            columnlist.append(column)
-            valuelist.append(sqlize(record[column]))
 
-        valuelist2 = []
-        for value in (valuelist):
-            if value is None:
-                valuelist2.append('null')
-            elif isinstance(value, (int, long, float)):
-                valuelist2.append(str(value))
-            else:
-                valuelist2.append("'%s'" % value)
-        
+        columns, values = zip(*record.items())
         sql = "%s into %s (%s) values (%s)" % (
             sql_cmd,
             self.tablename,
-            ', '.join(columnlist),
-            ', '.join(valuelist2))
-            #', '.join(map(lambda x: "'%s'" % x, valuelist)))
-            #', '.join(["'%s'" % x for x in valuelist])
-            
+            # support column names with spaces.
+            ', '.join(map(lambda x: "`%s`" % x, columns)),
+            ', '.join(['%s'] * len(values)),
+        )
+
         if self.debug_sql: print __name__, self.tablename, "SQL:\n ", sql
         id = 0
         try:
             if self.writeback:
-                self.db.query(sql)
-                #id = cursor.insert_id() # MySQLdb 1.0.1
+                self.db.query(sql, params=values)
                 id = self.db.lastrowid    # MySQLdb 1.2.1
-                #self.db.commit()        # Needed for MySQLdb 1.2.1
-                #if self.autocommit: 
-                #    self.db.commit() 
-                
+
         except Exception, e:
-            raise DataTableError (
-                "Unable to insert row into %s: %s" % (self.tablename, e))
+            type, value, traceback = sys.exc_info()
+            msg = "Unable to insert row into %s: %r" % (self.tablename, e)
+            raise DataTableError, (msg, type, value), traceback
         return id
 
     def updateRows (self, record):
@@ -257,11 +241,10 @@ class DataTable(object):
 
         # set_statment = "set col1 = 'mojo', col2 = 'jojo', ..."
         setters = []
-        for column, value in record.items():
-            if value is None:
-                setters.append("%s = NULL" % column)
-            else:
-                setters.append("%s = '%s'" % (column, sqlize(value)))
+        columns, values = zip(*record.items())
+        for column, value in zip(columns, values):
+            # Create a PDO template for parameter binding.
+            setters.append("%s = %%s" % column)
         set_statement = "set %s" % ', '.join(setters)
 
         where  = ''
@@ -276,11 +259,13 @@ class DataTable(object):
             set_statement,
             where)
 
-        if self.debug_sql: print __name__, self.tablename, "SQL:\n ", sql
+        if self.debug_sql:
+            sql_with_vals = sql % map(lambda x: '%s'%x, values)
+            print __name__, self.tablename, "SQL:\n ", sql_with_vals
         rowcount = 0
         try:
             if self.writeback:
-                rowcount = self.db.query(sql)
+                rowcount = self.db.query(sql, params=values)
                 #if self.autocommit:
                 #    self.db.commit()
         except Exception, e:
