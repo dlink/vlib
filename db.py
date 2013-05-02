@@ -1,3 +1,4 @@
+import os
 import MySQLdb
 import conf
 import singleton
@@ -29,7 +30,7 @@ class Db (object):
         '''
         
         self.connection = None
-        self.debug_sql  = DEBUG_SQL
+        self.debug_sql  = DEBUG_SQL or ('DEBUG_VLIB' in os.environ)
         self.cursor = None
         self.lastrowid_store = None
         self.rowcount_store = None
@@ -45,11 +46,13 @@ class Db (object):
         self.close()
 
         # Create connection:
-        self.connection = MySQLdb.connect(host   = params["host"],
-                                          user   = params["user"],
-                                          passwd = params["passwd"],
-                                          db     = params["db"],
-                                          port   = int(params["port"]))
+        self.connection = MySQLdb.connect(host        = params["host"],
+                                          user        = params["user"],
+                                          passwd      = params["passwd"],
+                                          db          = params["db"],
+                                          port        = int(params["port"]),
+                                          charset     = "utf8",
+                                          )
         self.connection.autocommit(AUTOCOMMIT)
 
     def open_cursor(self):
