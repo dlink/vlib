@@ -241,8 +241,12 @@ class DataTable(object):
 
         # set_statment = "set col1 = 'mojo', col2 = 'jojo', ..."
         setters = []
-        columns, values = zip(*record.items())
-        for column, value in zip(columns, values):
+        # We need the values in the same order as the keys later on, so
+        # solidify the order of the elements now and use values for the
+        # parameter binding later.
+        record_items = record.items()
+        columns, values = zip(*record_items)
+        for column, value in record_items:
             # Create a PDO template for parameter binding.
             setters.append("%s = %%s" % column)
         set_statement = "set %s" % ', '.join(setters)
