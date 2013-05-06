@@ -73,7 +73,7 @@ class Db (object):
             self.cursor.close()
             self.cursor = None
 
-    def _execute(self, sql, params=()):
+    def _execute(self, sql, params=None):
         if self.debug_sql: 
             print "SQL:", sql
         try:
@@ -91,7 +91,7 @@ class Db (object):
         except Exception, e:
             raise
         
-    def query(self, sql, from_trans=False, params=()):
+    def query(self, sql, from_trans=False, params=None):
         try:
             # Cursor may be set in the startTransaction() call.
             if not from_trans:
