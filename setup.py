@@ -16,4 +16,7 @@ setup(
     author_email='dlink@fwk.com',
     url='https://github.com/dlink/vlib',
     packages=['vlib'],
+    name='vlib',
+    version='0.1',
+    scripts=[],
 )
