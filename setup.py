@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
 
-try:
-    from setuptools import setup
-except ImportError:
-    from distutils.core import setup
+from setuptools import setup
 
 
 with open('README.md') as f:
@@ -19,4 +16,5 @@ setup(
     name='vlib',
     version='0.1',
     scripts=[],
+    install_requires=map(string.strip, open('requirements.txt').readlines()),
 )
