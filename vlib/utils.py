@@ -337,7 +337,7 @@ def list2csv(data):
     for row in data:
         row2 = []
         for c in row:
-            if isinstance(c, str) and any_in(',"\'', c):
+            if isinstance(c, basestring) and any_in(',"\'', c):
                 # put quotes on strings
                 row2.append('"%s"' % c)
             else:
