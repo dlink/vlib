@@ -8,6 +8,7 @@ database:
    user: vlibtests
    passwd: bogangles
    dictcursor: true
+   timezone: America/New_York
 
 logging:
    filename: X

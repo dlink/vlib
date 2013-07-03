@@ -39,7 +39,7 @@ class Db (object):
         params["port"] = params.get('port', PORT)
         self.params = params
         self.connect(params)
-        
+
     def connect(self, params):
         if DEBUG:
             print 'db:connect(%s)' % params
@@ -53,8 +53,9 @@ class Db (object):
                                           port        = int(params["port"]),
                                           charset     = "utf8",
                                           )
-        self.connection.autocommit(AUTOCOMMIT)
 
+        self.connection.autocommit(AUTOCOMMIT)
+        
     def open_cursor(self):
         '''
         if 'dictcursor' in params:
@@ -67,6 +68,8 @@ class Db (object):
         # anew, otherwise this self variable will cause great trouble.
         self.close_cursor()
         self.cursor = self.connection.cursor(MySQLdb.cursors.DictCursor)
+        if 'timezone' in self.params:
+            self.cursor.execute("set time_zone = '%s'" % self.params.timezone)
 
     def close_cursor(self):
         if self.cursor:

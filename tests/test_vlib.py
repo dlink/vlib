@@ -70,6 +70,19 @@ class TestDb(unittest.TestCase):
         results = self.db.query(sql)
         self.assertEqual(results[0]['book_name'], 'baranoff')
 
+    def test_timezone(self):
+        import conf
+        sql = 'select @@session.time_zone as time_zone'
+        db_timezone = self.db.query(sql)[0]['time_zone']
+        self.assertEqual(conf.getInstance().database.timezone, db_timezone)
+        
+    def test_timezone_same_as_localhost(self):
+        import datetime
+        sql = 'SELECT date_format(now(), "%Y-%m-%d %H:%i") as now;'
+        db_datetime = self.db.query(sql)[0]['now']
+        localhost_datetime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M").lower()
+        self.assertEqual(localhost_datetime, db_datetime)
+        
 class TestShell(unittest.TestCase):
     def setUp(self):
         from shell import Shell
