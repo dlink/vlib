@@ -1,6 +1,8 @@
 from datetime import datetime
 from email.utils import formatdate
 import logging, logging.handlers
+import os
+import os.path
 import smtplib
 import socket
 
@@ -55,6 +57,11 @@ def getLogger(name):
 
     logger = logging.getLogger(name)
     logger.setLevel(level)
+
+    # create dir if nec.
+    dirname = os.path.dirname(logfile)
+    if not os.path.exists(dirname):
+        os.mkdir(dirname)
 
     # file handler
     fh = logging.FileHandler(logfile)
