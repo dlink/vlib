@@ -7,7 +7,7 @@ def pretty_sql(sql, html=False):
     keywords = ['select', 'from', 'where', 'order by', 'group by',
                 'having', 'limit', 'insert into', 'values']
     # Line break with indentation and color code:
-    keywords2 = ['and', 'case', 'else', 'end', 'join', 'when']
+    keywords2 = ['and', 'case', 'else', 'end', 'left join', 'join', 'when']
     # Color code only:
     keywords3 = ['as', 'coalesce', 'on', 'or', 'then']
 
