@@ -41,4 +41,17 @@ def pretty_sql(sql, html=False):
         sql = re.sub(r'\b(%s)\s+' % k,
                      r'%s\1%s ' % (f1b, f2),
                      sql)
-    return sql
+
+    # Second pass - indent subqueries
+    # (To really do this correctly we need a full sql parse)
+    sql2 = ''
+    ind = ''
+    for i, x in enumerate(sql.split(nl)):
+        # Start indenting after the second SELECT
+        if 'select' in x and i > 1:
+            ind = indent*2
+        sql2 += '%s%s%s' % (ind, x, nl)
+        # Stop indenting after the join's ON statement (hokey I know)
+        if re.search(r'\) %sas%s \w+ %son%s' % (f1b, f2, f1b, f2), x):
+            ind = ''
+    return sql2
