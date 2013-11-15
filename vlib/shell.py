@@ -1,4 +1,9 @@
 #!/usr/bin/env python
+#
+# Usage:
+#   self.shell = Shell()
+#   self.shell.echo_cmd = self.verbose
+#   result = self.shell.cmd(cmd)
 
 from subprocess import Popen, PIPE
 
