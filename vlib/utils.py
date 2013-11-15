@@ -309,7 +309,7 @@ def pretty(X):
     '''Return X formated nicely for the console'''
     o = ''
     if isinstance(X, (list, tuple)):
-        if isinstance(X[0], (list, tuple)):
+        if X and isinstance(X[0], (list, tuple)):
             for row in X:
                 o +=  ",".join(map(str, row)) + '\n'
         else:
