@@ -134,10 +134,13 @@ def shift(alist):
 class Str2DateError(Exception): pass
 
 def str2datetime(s, format="%Y-%m-%d %H:%M:%S"):
-    """Convert str in the form of "2010-11-11 17:39:52" to a
+    """Convert str in the form of "2010-11-11 17:39:52" or
+                                  "2010-11-11"          to a
        datetime.datetime Object
     """
     from datetime import datetime
+    if len(s) == 10:
+        s += ' 00:00:00'
     try:
         return datetime.strptime(s, format)
     except Exception, e:
@@ -157,7 +160,7 @@ def str2date(s):
 
 def format_datetime(d, with_seconds=False, format=None):
     '''Given a datetime object
-       Return formated String.
+       Return formated String as follows:
 
           Format: None   : 11/22/2013 01:46[:00] am
                   ISO8601: 2013-11-21T01:46:00Z
