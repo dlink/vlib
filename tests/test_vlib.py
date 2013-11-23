@@ -146,6 +146,12 @@ g,h,i
         self.assertEqual(utils.format_datetime(d, format='ISO8601'),
                          '2013-11-22T10:09:08Z')
 
+    def test_format_datetime_ISO8601_without_time(self):
+        import utils
+        d = datetime.datetime(2013,11,22)
+        self.assertEqual(utils.format_datetime(d, format='ISO8601'),
+                         '2013-11-22T00:00:00Z')
+
 def syntax():
     progname = os.path.basename(sys.argv[0])
     print
