@@ -155,12 +155,17 @@ def str2date(s):
         raise Str2DateError('Unable to convert "%s" to datetime: %s: %s'
                             % (s, e.__class__.__name__, e))
 
-def format_datetime(d, with_seconds=False):
+def format_datetime(d, with_seconds=False, format=None):
     '''Given a datetime object
-    Return a string in the form of "mm/dd/yyyy hh:mm (am/pm)"
+       Return formated String.
+
+          Format: None   : 11/22/2013 01:46[:00] am
+                  ISO8601: 2013-11-21T01:46:00Z
     '''
     try:
-        if with_seconds:
+        if format == 'ISO8601':
+            return d.strftime("%Y-%m-%dT%H:%M:%SZ")
+        elif with_seconds:
             return d.strftime("%m/%d/%Y %I:%M:%S %p").lower()
         else:
             return d.strftime("%m/%d/%Y %I:%M %p").lower()

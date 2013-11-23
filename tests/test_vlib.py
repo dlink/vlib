@@ -4,6 +4,7 @@
 import os
 import unittest
 import sys
+import datetime
 
 DEBUG = 0
 
@@ -77,7 +78,6 @@ class TestDb(unittest.TestCase):
         self.assertEqual(conf.getInstance().database.timezone, db_timezone)
         
     def test_timezone_same_as_localhost(self):
-        import datetime
         sql = 'SELECT date_format(now(), "%Y-%m-%d %H:%i") as now;'
         db_datetime = self.db.query(sql)[0]['now']
         localhost_datetime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M").lower()
@@ -127,7 +127,25 @@ g,h,i
 '''
         AA = [['a', 'b', 'c'], ['d', 'e', 'f'], ['g','h', 'i']]
         self.assertEqual(AAstr, utils.pretty(AA))
-        
+
+    def test_format_datetime(self):
+        import utils
+        d = datetime.datetime(2013,11,22,10,9,8)
+        self.assertEqual(utils.format_datetime(d),
+                         '11/22/2013 10:09 am')
+
+    def test_format_datetime_with_sections(self):
+        import utils
+        d = datetime.datetime(2013,11,22,10,9,8)
+        self.assertEqual(utils.format_datetime(d, with_seconds=1),
+                         '11/22/2013 10:09:08 am')
+
+    def test_format_datetime_ISO8601(self):
+        import utils
+        d = datetime.datetime(2013,11,22,10,9,8)
+        self.assertEqual(utils.format_datetime(d, format='ISO8601'),
+                         '2013-11-22T10:09:08Z')
+
 def syntax():
     progname = os.path.basename(sys.argv[0])
     print
