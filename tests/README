@@ -16,17 +16,14 @@ I. INITIAL SET UP
      mysql> quit
      $ cat create_vlibtests.sql | mysql -uvlibtests -pbogangles vlibtests
 
+II SET ENVIRONMENT
 
-   B. set PYTHONPATH
-  
-   $ export PYTHONPATH=$HOME/vlib                     # Or wherever it is.
+   source set_env.sh
 
-   C. set VCONF
-  
-   $ export VCONF=$HOME/vlib/tests/testconf.yml    # Or wherever it is.
-
+   It does the following:
+      $ export PYTHONPATH=$PWD/../vlib
+      $ export VCONF=$PWD/testconf.yml
 
 II. Run test
 
-   $ cd $HOME/vlib/tests
    $ ./test_vlibs.py All   # With no args for help
