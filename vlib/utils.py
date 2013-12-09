@@ -163,11 +163,11 @@ def format_datetime(d, with_seconds=False, format=None):
        Return formated String as follows:
 
           Format: None   : 11/22/2013 01:46[:00] am
-                  ISO8601: 2013-11-21T01:46:00Z
+                  ISO8601: 2013-11-21T01:46:00-05:00 (EST)
     '''
     try:
         if format == 'ISO8601':
-            return d.strftime("%Y-%m-%dT%H:%M:%SZ")
+            return d.strftime("%Y-%m-%dT%H:%M:%S-05:00")
         elif with_seconds:
             return d.strftime("%m/%d/%Y %I:%M:%S %p").lower()
         else:
