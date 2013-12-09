@@ -115,6 +115,18 @@ class DataTable(object):
         '''Set value of LIMIT CLAUSE in subsequent SQL SELECT statements.'''
         self.limit = limit
         
+    def get(self, filter=None):
+        '''Given an optional SQL filter, or None for All
+           Return rows.  (See getTable())
+        '''
+        o = []
+        self.setColumns('*')
+        if filter:
+            self.setFilters(filter)
+        else:
+            self.setFilters('1')
+        return self.getTable()
+
     def getTable (self):
         '''Performs an SQL SELECT statement. 
 
