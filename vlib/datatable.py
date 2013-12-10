@@ -215,7 +215,8 @@ class DataTable(object):
             ', '.join(['%s'] * len(values)),
         )
 
-        if self.debug_sql: print __name__, self.tablename, "SQL:\n ", sql
+        if self.debug_sql:
+            print __name__, self.tablename, "SQL:\n ", sql, values
         id = 0
         try:
             if self.writeback:
