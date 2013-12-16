@@ -78,7 +78,7 @@ class Db (object):
 
     def _execute(self, sql, params=None):
         if self.debug_sql: 
-            print "SQL:", sql
+            print "SQL:", sql, params
         try:
             rv = self.cursor.execute(sql, params)
             self.lastrowid_store = self.cursor.lastrowid

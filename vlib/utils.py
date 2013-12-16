@@ -353,3 +353,16 @@ def list2csv(data):
         o += ','.join(map(str, row2)) + '\n'
     return o
             
+
+def lazyproperty(fn): 
+    '''A decorator that computes a property variable and then caches.
+    http://stackoverflow.com/questions/3012421/python-lazy-property-decorator 
+    '''
+    attr_name = '_lazy_' + fn.__name__
+    @property
+    def _lazyproperty(self):
+        if not hasattr(self, attr_name):
+            setattr(self, attr_name, fn(self))
+        return getattr(self, attr_name)
+    return _lazyproperty
+
