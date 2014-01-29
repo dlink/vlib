@@ -78,19 +78,28 @@ class DataTable(object):
         '''Set filters to be used in WHERE CLAUSES of
         subsequent SQL SELECT and UPDATE statements.
 
-        The filters arg can be either a string or a list of strings.
+        The filters arg can be a string, a list of strings, or a dict
+        containing strings or lists (to use with "W in (X, Y, Z)")
         
         Examples: dobj.setFilters ("email like 'fred%'")
                   dobj.setFilters (["email like 'fred%'", "name = 'Fred'"])
                   dobj.setFilters ({'email': 'fred@foo.bar', 'name': 'Fred'})
+                  dobj.setFilters ({'name': ['Fred', 'foo', 'bar']})
         '''
 
         if isinstance(filters, (str, unicode)):
-            filters = [filters]
+            new_filters = [filters]
         elif isinstance(filters, dict):
-            filters = ["%s = '%s'" % (k, sqlize(v)) if v else '%s is null' % k
-                      for k,v in filters.items()]
-        self.filters = filters
+            new_filters = []
+            for k, v in filters.items():
+                if not v:
+                    new_filters.append("%s is null" % k)
+                elif isinstance(v, list):
+                    vals = ["'%s'" % sqlize(val) for val in v]
+                    new_filters.append("%s in (%s)" % (k, ", ".join(vals)))
+                else:
+                    new_filters.append("%s = '%s'" % (k, sqlize(v)))
+        self.filters = new_filters
 
     def setOrderBy (self, order_by):
         '''Set list of columns used in ORDER BY CLAUSE of
