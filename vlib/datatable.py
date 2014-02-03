@@ -88,8 +88,10 @@ class DataTable(object):
         '''
 
         if isinstance(filters, (str, unicode)):
+            #string
             new_filters = [filters]
         elif isinstance(filters, dict):
+            #dict
             new_filters = []
             for k, v in filters.items():
                 if not v:
@@ -99,6 +101,9 @@ class DataTable(object):
                     new_filters.append("%s in (%s)" % (k, ", ".join(vals)))
                 else:
                     new_filters.append("%s = '%s'" % (k, sqlize(v)))
+        else:
+            #list
+            new_filters = filters
         self.filters = new_filters
 
     def setOrderBy (self, order_by):
@@ -291,7 +296,8 @@ class DataTable(object):
         rowcount = 0
         try:
             if self.writeback:
-                rowcount = self.db.query(sql, params=values)
+                self.db.query(sql, params=values)
+                rowcount = self.db.rowcount
                 #if self.autocommit:
                 #    self.db.commit()
         except Exception, e:
