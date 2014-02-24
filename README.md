@@ -54,3 +54,47 @@ Python Application Development - Core Classes
 	  for row in db_.query('select * from product_types'):
              print row['product_type_id']
              print row['name']
+             
+   * Logging Module
+
+     Usage:
+
+          # To setup a Logging instance, you need to define the following
+          # in your config file:
+          #
+          # logging:
+          #    filename: /var/log/myapp/myapp.log
+          #    level: DEBUG
+           
+          # If you want the logger to email you on 'critical' you need 
+          # define email server
+          #
+          # email:                                                                          
+          #    server  : smtp.gmail.com:587                                                 
+          #    username: mailerbot@mycompany.com                                   
+          #    password: secret                                                    
+          #    fromaddr: Myapp Admin mailerbot@mycompany.com                         
+           
+          from vlib import logger
+                    
+          class MyClass:
+           
+             def __init__(self):
+                self.logger = logger.getLogger(self.__class__.__name__)
+               
+             def do_something(self):
+                self.logger.debug('Started MyClass.do_something()')
+                self.logger.info('Did Something')
+                self.logger.warn('Warning')
+                self.logger.error('Did not do something')
+                 
+                # The following we send email:                                          
+                # self.logger.critical('Something bad happened')    
+                 
+          MyClass().do_something()
+             
+          # Outputs the following in the log:
+          2014-02-24 14:41:30	dev1.localdomain	DEBUG	MyClass	Started MyClass.do_something()		
+          2014-02-24 14:41:30	dev1.localdomain	INFO	MyClass	Did Something		
+          2014-02-24 14:41:30	dev1.localdomain	WARNING	MyClass	Warning		
+          2014-02-24 14:41:30	dev1.localdomain	ERROR	MyClass	Did not do something	
