@@ -291,7 +291,7 @@ class DataTable(object):
             where)
 
         if self.debug_sql:
-            sql_with_vals = sql % map(lambda x: '%s'%x, values)
+            sql_with_vals = sql % tuple(map(lambda x: "'%s'" % x, values))
             print __name__, self.tablename, "SQL:\n ", sql_with_vals
         rowcount = 0
         try:
