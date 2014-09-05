@@ -47,11 +47,11 @@ Python Application Development - Core Classes
           #    db: vlibtests
           #    user: vlibtests
           #    passwd: bogangles
-
+          
           from vlib import db
           db_ = db.getInstance()
-
-	  for row in db_.query('select * from product_types'):
+          
+          for row in db_.query('select * from product_types'):
              print row['product_type_id']
              print row['name']
              
