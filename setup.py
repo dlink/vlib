@@ -11,11 +11,12 @@ setup(
     description='vlib core libraries',
     long_description=readme,
     author='David Link',
-    author_email='dlink@fwk.com',
+    author_email='dvlink@gmail.com',
     url='https://github.com/dlink/vlib',
     packages=['vlib'],
     name='vlib',
     version='0.4',
     scripts=[],
+    license='GNU General Public License (GPL)',
     install_requires=map(string.strip, open('requirements.txt').readlines()),
 )
