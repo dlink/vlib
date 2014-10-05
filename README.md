@@ -1,6 +1,6 @@
 Python Application Development - Core Classes 
 
- Modules:
+ __Modules:__
 
    * Configuration File Support
 
@@ -12,7 +12,8 @@ Python Application Development - Core Classes
 
    * Object-like syntax for Dictionaries (odict)
 
- Details:
+__Details:__
+
 
    * Configuration Module
     
