@@ -83,7 +83,7 @@ __Details:__
          from vlib import db
          class Foo(object):
              def __init__(self):
-                 self.db   = db.getInstance()
+                 self.db = db.getInstance()
              def getBook(self, book_id):
                 sql = 'select * from books where book_id = %s' % book_id
                 results = self.db.query(sql)
