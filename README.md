@@ -35,6 +35,18 @@ __Details:__
 
           print conf_.mojo.color
 
+          # Real world example with Objects
+          
+          from vlib import conf
+          
+          class Foo(object):
+              def __init__(self):
+                  self.conf = conf.getInstance()
+                  
+                  webserver = self.conf.webserver
+                  dbname    = self.conf.db.name
+                  
+
    * Database Module
 
       Usage:
