@@ -153,12 +153,16 @@ Installation
 
 __Ubuntu__
 
-If you haven't installed pip yet:
+Update apt-get to the latest libraries:
+
+    apt-get update
+
+Install pip, if you haven't done so already:
 
      apt-get install python-pip
      pip install -U pip
 
-If you havent installed Mysql DB Connectorm, yet:
+Install Mysql DB Connectorm, if you haven't done so already:
 
     apt-get install python-dev libmysqlclient-dev
     pip install MySQL-python
