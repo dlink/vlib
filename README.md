@@ -2,21 +2,22 @@ Python Application Development - Core Library Classes
 
 Developed over a period of time to address reoccurring requirements for most all applications.  It provides the following modules:
 
-__Modules__
+## Modules
 
    * Configuration File Support
 
    * Database Support
 
-   * Logging Support
-
-   * Emailing Support
+   * Logging Support (with email Support)
 
    * Object-like (dot) syntax for Dictionaries
 
-__Details__
+   * Utilities
 
-*Configuration Module*
+## Details
+
+### Configuration Module
+
 
 The configuration module reads yaml files and provides a dot syntax for expressing nested data trees.  ie. self.conf.database.hostname.
     
@@ -50,7 +51,7 @@ The configuration module reads yaml files and provides a dot syntax for expressi
                   self.webserver = self.conf.webserver
                   self.dbname    = self.conf.db.name
                   ...
-*Database Module*
+### Database Module
 
 The database modules provides a simple set of methods for talking to your database, like query(), startTransaction(), commit(), etc.
 
@@ -100,7 +101,7 @@ The database modules provides a simple set of methods for talking to your databa
                    return results[0]
                 return []
 
-*Logging Module*
+### Logging Module
 
 The logging module uses log4r to produce consistent log entries that include date, hostname, and class name.
 
@@ -148,8 +149,96 @@ The above outputs to the log:
     2014-02-24 14:41:30	dev1.localdomain	ERROR	MyClass	Did not do something
 
 
-Installation
-------------
+### Object Dictionary
+
+The **odict** class is syntactic sugar for dealing with dictionaries and nested dictionaries. It privides dot (.) sytax, as well as flower brace ({}) and squre braces ([]) syntax
+
+    attr['color'] = 'blue' # normal dict
+
+    attr.color = 'blue'    # odict
+
+Example 1: This code using dicts …
+
+    picture  = {'name'    : 'The Card Players',
+                'filename': 'cezanne2.jpg',
+                'year'    : 1895}
+    print img(src=picture['filename'])
+
+Can be written like this:
+
+    from vlib.odict import odict
+    picture  = odict(name     = 'The Card Players',
+                     filename = 'cezanne2.jpg',
+                     year     = 1895)
+    print img(src=picture.filename)
+
+
+Nested Odicts Example:
+
+    from vlib.odict import odict
+    workflow = odict(processes=odict(max_processes=5, debug=False))
+    for p in workflow.processes.max_processes:
+        startHandler(workflow.processes.debug)
+
+### Utilities
+
+    pretty(X):
+        Return X formated nicely for the console
+
+    str2datetime(s, format="%Y-%m-%d %H:%M:%S"):
+        Convert str in the form of "2010-11-11 17:39:52" or
+                                   "2010-11-11"          to a
+        datetime.datetime Object
+
+    str2date(s):
+        Convert str in the form of "2010-11-11" to a
+        datetime.date Object
+
+    format_datetime(d, with_seconds=False, format=None):
+        Given a datetime object
+        Return formated String as follows:
+
+           Format: None   : 11/22/2013 01:46[:00] am
+                   ISO8601: 2013-11-21T01:46:00-05:00 (EST)
+
+    format_date(d):
+        Given a datetime object
+        Return a string in the form of "mm/dd/yyyy"
+
+    table2csv(data):
+        Give a LIST or TUPLE
+        Return: A CSV table as STRING or the input data if not LIST or TUPLE
+
+    list2csv(data):
+        Given a Table of data as a LIST of LISTs
+        Return in CSV format as a STR
+
+    formatdict(d, width=console_width(), indent=0, keylen=0, color=False):
+        Recursively format contents of dictionaries in sorted tabular order.
+        Optionally a certain width, indented, and/or a specific key length.
+
+        >>> utils.formatdict(batch_item)
+                active: 1
+              batch_id: 3250
+              on_press: None
+              order_id: 2007372
+             page_list: None
+                   qty: 2
+          removed_date: None
+
+    uniqueId(with_millisec=False):
+        Return system time to the millisec as set of numbers
+
+    shift(alist):
+        shift the firt element off of an array and return it
+
+    valid_email(email):
+        Given an email address
+        Return whether it is in valid format as BOOLEAN
+
+
+
+## Installation
 
 __Ubuntu__
 
@@ -167,6 +256,6 @@ Install Mysql DB Connectorm, if you haven't done so already:
     apt-get install python-dev libmysqlclient-dev
     pip install MySQL-python
 
-Install vlib:
+Install vweb:
 
-    pip install vlib
+    pip install vweb

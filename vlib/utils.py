@@ -129,6 +129,7 @@ def uniqueId(with_millisec=False):
         return d[0:4]+d[5:7]+d[8:10]+'-'+d[11:13]+d[14:16]+d[17:19]
 
 def shift(alist):
+    '''Shift the first element off of an array, and return it'''
     return alist.pop(0)
 
 class Str2DateError(Exception): pass
