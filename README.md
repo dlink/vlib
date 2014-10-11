@@ -1,6 +1,6 @@
 Python Application Development - Core Classes 
 
- __Modules:__
+__Modules:__
 
    * Configuration File Support
 
@@ -134,3 +134,20 @@ __Details:__
           2014-02-24 14:41:30	dev1.localdomain	INFO	MyClass	Did Something		
           2014-02-24 14:41:30	dev1.localdomain	WARNING	MyClass	Warning		
           2014-02-24 14:41:30	dev1.localdomain	ERROR	MyClass	Did not do something	
+
+
+
+__Install__
+
+For Ubuntu,
+
+Install pip:
+    apt-get install python-pip
+    pip install -U pip
+
+Install Mysql DB Connector:
+    apt-get install python-dev libmysqlclient-dev
+    pip install MySQL-python
+
+Install vlib:
+    pip install vlib
