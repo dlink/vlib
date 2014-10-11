@@ -1,6 +1,6 @@
 Python Application Development - Core Classes 
 
- Modules:
+ __Modules:__
 
    * Configuration File Support
 
@@ -12,7 +12,8 @@ Python Application Development - Core Classes
 
    * Object-like syntax for Dictionaries (odict)
 
- Details:
+__Details:__
+
 
    * Configuration Module
     
@@ -34,12 +35,22 @@ Python Application Development - Core Classes
 
           print conf_.mojo.color
 
+          # Real world example with Objects
+          
+          from vlib import conf
+          class Foo(object):
+              def __init__(self):
+                  self.conf = conf.getInstance()
+                  webserver = self.conf.webserver
+                  dbname    = self.conf.db.name
+                  
+
    * Database Module
 
       Usage:
 
           # To setup the Db instance, you need to define the following
-          # in your config file:
+          # in your config file pointed to by the VCONF environement var
           #
           # database:
           #    engine: mysql
@@ -49,11 +60,36 @@ Python Application Development - Core Classes
           #    passwd: bogangles
           
           from vlib import db
-          db_ = db.getInstance()
+          mydb = db.getInstance()
           
-          for row in db_.query('select * from product_types'):
+          for row in mydb.query('select * from product_types'):
              print row['product_type_id']
              print row['name']
+             
+          # Without using config
+          
+          from vlib import Db
+          mydb = Db({'engine':'mysql', 
+                     'host':'db1', 
+                     'db':'books',                 
+                     'user':'bookmgr', 
+                     'passwd':'mepassword', 
+                     'dictcursor':True })
+                     
+         # Real world example with Objects
+         # Set VCONF env var (conf module above)
+         # $ export VCONF=$HOME/proj/conf/dev.yml
+         
+         from vlib import db
+         class Foo(object):
+             def __init__(self):
+                 self.db = db.getInstance()
+             def getBook(self, book_id):
+                sql = 'select * from books where book_id = %s' % book_id
+                results = self.db.query(sql)
+                if results:
+                   return results[0]
+                return []
              
    * Logging Module
 
