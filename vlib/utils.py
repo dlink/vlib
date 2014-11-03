@@ -329,7 +329,7 @@ def pretty(X):
             o +=  "%s: %s" % (k, X[k]) + '\n'
     else:
         o += str(X)
-    return o
+    return o.strip() # strip off final \n so we can print it
 
     
 def any_in(items, thing):
