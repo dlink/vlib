@@ -35,6 +35,10 @@ class DataTable(object):
     #   '''Turn autocommit on (1) or off (0). Default is on.  See __init__()'''
     #    self.autocommit = state
     
+    @property
+    def table_columns(self):
+        return [x['Field'] for x in self.db.query('desc %s' % self.tablename)]
+
     def startTransaction(self):
         self.db.startTransaction()
         
@@ -59,6 +63,11 @@ class DataTable(object):
         if self.debug:
             print __name__, self.tablename, "setWriteBack (%s)" % switch
         self.writeback = switch
+
+    def describe(self):
+        '''Return output of SQL Describe command as a Dict'''
+        return self.db.query('desc %s' % self.tablename)
+
         
     def setColumns (self, columns):
         '''Set User defined column list to be used SELECT CLAUSE of
@@ -386,8 +395,12 @@ def sqlize(s):
         s = s.replace('\\', '\\\\')
     return s
 
+# Tests
 #import db
-#db_ = db.singletonFactory.create()
-#dt = DataTable(db_, 'adoptions')
-#dt.setFilters('party_id=1')
+#db_ = db.getInstance()
+#dt = DataTable(db_, 'providers')
+#dt.setFilters('id=3')
 #print dt.getTable()
+#print dt.table_columns
+#for row in dt.describe():
+#    print row
