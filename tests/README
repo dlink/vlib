@@ -16,6 +16,25 @@ I. INITIAL SET UP
      mysql> quit
      $ cat create_vlibtests.sql | mysql -uvlibtests -pbogangles vlibtests
 
+
+   B. Load Mysql Timezones if necessary.
+
+   1. Check if timzones are loaded:
+
+      mysql> set time_zone = 'America/New_York';
+
+   2. If that failed then load them.
+      The Unix timezones directory (/usr/share/zoneinfo) may vary:
+
+      $ mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -u root -p mysql
+
+   3. You may also need to set the timezone of the Unix box
+
+      On Ubuntu:
+
+      # dpkg-reconfigure tzdata
+
+
 II SET ENVIRONMENT
 
    source set_env.sh
