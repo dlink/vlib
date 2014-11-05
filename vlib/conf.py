@@ -16,7 +16,7 @@ class Conf(object):
     
        Usage:
        
-          # To create a singleton instance of configuration data
+          # To create a single instance of configuration data
           # found in a yaml file pointed to by an environment
           # variable called VCONF
           
@@ -79,7 +79,7 @@ def expandEnvVars(data):
     return data2
 
 class Factory(object):
-    '''Singleton factory Class
+    '''Single instance factory Class
        
        To Use:
            import conf
