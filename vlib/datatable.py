@@ -371,14 +371,14 @@ class DataTable(object):
 
         #$table_alias = self.getAlias() - table alias to come
         columnDefs = []
-        table_columns = []
+        #table_columns = []
         column_types  = []
         for row in table:
             columnDefs.append({'name': row['Field'],
                                'type': row['Type']})
-            table_columns.append(row['Field'])
+            #table_columns.append(row['Field'])
             column_types.append(row['Type'])
-        self.table_columns = table_columns
+        #self.table_columns = table_columns
         self.column_types  = column_types           
         return columnDefs
         #if self.use_lowercase_names:

@@ -18,27 +18,27 @@ SECRET='toyboat$'
 
 class TestConf(unittest.TestCase):
     '''Test Conf'''
-    
+
     def setUp(self):
         import conf
         self.conf = conf.getInstance()
-        
+
     def test_getvar(self):
         self.assertEqual(self.conf.database.engine, DATABASE_ENGINE)
-        
+
     def test_getvar_withenvvar(self):
         self.assertEqual(self.conf.shell, SHELL)
 
     def test_getvar_withescaping(self):
         self.assertEqual(self.conf.secret, SECRET)
-        
+
 class TestDataTable(unittest.TestCase):
     '''Test DataTable'''
 
     def setUp(self):
         import db
         from datatable import DataTable
-        
+
         self.db = db.getInstance()
         self.datatable = DataTable(self.db, 'disciplines')
 
@@ -56,6 +56,33 @@ class TestDataTable(unittest.TestCase):
         actual = sort(results)
         expected = sort(expected)
         for old, new in zip(expected, actual):
+            self.assertDictEqual(old, new)
+
+    def test_table_columns(self):
+        expected = ['discipline_id', 'code', 'name', 'description',
+                    'active', 'last_updated']
+        results = self.datatable.table_columns
+        self.assertEqual(expected, results)
+
+    def test_describe(self):
+        sort = lambda r: sorted(r, key=lambda x: x['Field'])
+        expected = sort([
+            {'Extra': '', 'Default': None, 'Field': 'discipline_id',
+             'Key': 'PRI', 'Null': 'NO', 'Type': 'int(10) unsigned'},
+            {'Extra': '', 'Default': None, 'Field': 'code',
+             'Key': 'MUL', 'Null': 'NO', 'Type': 'varchar(30)'},
+            {'Extra': '', 'Default': None, 'Field': 'name',
+             'Key': '', 'Null': 'NO', 'Type': 'varchar(45)'},
+            {'Extra': '', 'Default': None, 'Field': 'description',
+             'Key': '', 'Null': 'YES', 'Type': 'varchar(255)'},
+            {'Extra': '', 'Default': None, 'Field': 'active',
+             'Key': '', 'Null': 'NO', 'Type': 'int(10) unsigned'},
+            {'Extra': 'on update CURRENT_TIMESTAMP',
+             'Default': 'CURRENT_TIMESTAMP', 'Field': 'last_updated',
+             'Key': '', 'Null': 'NO', 'Type': 'timestamp'}
+            ])
+        results = sort(self.datatable.describe())
+        for old, new in zip(expected, results):
             self.assertDictEqual(old, new)
 
 class TestDb(unittest.TestCase):
@@ -76,31 +103,31 @@ class TestDb(unittest.TestCase):
         sql = 'select @@session.time_zone as time_zone'
         db_timezone = self.db.query(sql)[0]['time_zone']
         self.assertEqual(conf.getInstance().database.timezone, db_timezone)
-        
+
     def test_timezone_same_as_localhost(self):
         sql = 'SELECT date_format(now(), "%Y-%m-%d %H:%i") as now;'
         db_datetime = self.db.query(sql)[0]['now']
         localhost_datetime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M").lower()
         self.assertEqual(localhost_datetime, db_datetime)
-        
+
 class TestShell(unittest.TestCase):
     def setUp(self):
         from shell import Shell
         self.shell = Shell()
-        
+
     def test_ls(self):
         output = self.shell.cmd('ls')
 
 class TestUtils(unittest.TestCase):
-    
+
     def setUp(self):
         pass
-    
+
     def test_pretty_str(self):
         import utils
         str = 'This is a string'
         self.assertEqual(str, utils.pretty(str))
-        
+
     def test_pretty_list(self):
         import utils
         Astr = '''ennie
@@ -109,7 +136,7 @@ mightie
 '''
         A = ['ennie', 'meanie', 'mightie']
         self.assertEqual(Astr, utils.pretty(A))
-        
+
     def test_pretty_dict(self):
         import utils
         Dstr = '''color: blue
