@@ -9,6 +9,7 @@ from odict import odict
 # Set this to whatever you want.
 CONF_ENV_VAR = 'VCONF'
 
+class ConfElement(odict): pass
 class ConfError(Exception): pass
 
 class Conf(object):
@@ -62,9 +63,9 @@ class Conf(object):
 
 def expandEnvVars(data):
     '''Expand OS Environement Variables
-       Also returns data as an `odict`
+       Also returns data as a ConfElement
     '''
-    data2 = odict()
+    data2 = ConfElement()
     for k, v in data.items():
         if isinstance(v, dict):
             v = expandEnvVars(v)
