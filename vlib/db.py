@@ -69,7 +69,7 @@ class Db (object):
         self.close_cursor()
         self.cursor = self.connection.cursor(MySQLdb.cursors.DictCursor)
         if 'timezone' in self.params:
-            self.cursor.execute("set time_zone = '%s'" % self.params.timezone)
+            self.cursor.execute("set time_zone = '%s'" % self.params['timezone'])
 
     def close_cursor(self):
         if self.cursor:
