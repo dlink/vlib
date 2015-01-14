@@ -2,26 +2,24 @@
 
 import re
 
-def pretty_sql(sql, html=False):
+
+def sql_pretty(sql, lowercase_kw=True, html=False):
+    '''Return formated SQL String'''
+
     # Line break and color code 1:
     keywords = ['select', 'from', 'where', 'order by', 'group by',
                 'having', 'limit', 'insert into', 'values']
 
     # Line break with indentation and color code 2:
-    keywords2 = ['and', 'case', 'else', 'end',
-                 r'(left |right )?(inner |outer )?join',
-                 'when']
+    keywords2  = ['and', 'case', 'else', 'end', 'when']
+    keywords2b = [r'(left |right )?(inner |outer )?join',]
 
     # Color code only 3:
     keywords3 = ['as', 'coalesce', 'on', 'or', 'then']
 
-    keywords += [k.upper() for k in keywords]
-    keywords2 += [k.upper() for k in keywords2]
-    keywords3 += [k.upper() for k in keywords3]
-    
     if html:
         indent = '&nbsp;' * 3
-        nl = '<br \>'
+        nl = '<br \>\n'
         f1 = "<font color='blue'>"
         f1b= "<font color='green'>"
         f2 = '</font>'
@@ -34,17 +32,24 @@ def pretty_sql(sql, html=False):
         
     sql = re.sub(r'\s+', ' ', sql)
     for k in keywords:
+        k2 = k if lowercase_kw else '\\1'
         sql = re.sub(r'\s*\b(%s)\s+' % k,
-                     r'%s%s\1%s%s%s' % (nl, f1, f2, nl, indent),
-                     sql)
+                     r'%s%s%s%s%s%s' % (nl, f1, k2, f2, nl, indent),
+                     sql, 0, re.IGNORECASE)
     for k in keywords2:
+        k2 = k if lowercase_kw else '\\1'
+        sql = re.sub(r'\b(%s)\s+' % k,
+                     r'%s%s%s%s%s ' % (nl, indent, f1b, k2, f2),
+                     sql, 0, re.IGNORECASE)
+    for k in keywords2b:
         sql = re.sub(r'\b(%s)\s+' % k,
                      r'%s%s%s\1%s ' % (nl, indent, f1b, f2),
-                     sql)
+                     sql, 0, re.IGNORECASE)
     for k in keywords3:
+        k2 = k if lowercase_kw else '\\1'
         sql = re.sub(r'\b(%s)\s+' % k,
-                     r'%s\1%s ' % (f1b, f2),
-                     sql)
+                     r'%s%s%s ' % (f1b, k2, f2),
+                     sql, 0, re.IGNORECASE)
 
     # Second pass - indent subqueries
     # (To really do this correctly we need a full sql parse)
@@ -62,3 +67,9 @@ def pretty_sql(sql, html=False):
         if re.search(r'\) %sas%s \w+ %son%s' % (f1b, f2, f1b, f2), x):
             ind = ''
     return sql2
+
+def pretty_sql(sql, lowercase_kw=True,  html=False):
+    '''Same thing as sql_pretty()'''
+
+    return sql_pretty(sql, lowercase_kw, html)
+
