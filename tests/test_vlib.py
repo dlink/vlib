@@ -8,7 +8,7 @@ import datetime
 
 DEBUG = 0
 
-TEST_NAMES = ('All', 'Conf', 'DataTable', 'Db', 'Shell', 'Utils')
+TEST_NAMES = ('All', 'Conf', 'DataTable', 'Db', 'Shell', 'Utils', 'SqlUtils')
 
 
 # Fixtures
@@ -176,6 +176,34 @@ g,h,i'''
         self.assertEqual(utils.format_datetime(d, format='ISO8601'),
                          '2013-11-22T00:00:00-05:00')
 
+class TestSqlUtils(unittest.TestCase):
+    '''Given sql statements already in pretty format
+       remove formating, reformat, and then compare.
+    '''
+
+    def test_sql_pretty1(self):
+        self.do_test(1)
+
+    def test_sql_pretty2(self):
+        self.do_test(2)
+
+    def do_test(self, test_num):
+        import re
+        import sqlutils
+        sql = open('testsqlpretty%s.sql' % test_num).read()
+        rawsql = re.sub(r'\s+', ' ', sql)
+        prettysql = sqlutils.pretty_sql(rawsql)
+
+        #self.show_before_and_after(sql, prettysql)
+        self.assertEqual(sql, prettysql)
+
+    def show_before_and_after(self, sql1, sql2):
+        '''For testing the test'''
+        print
+        print '"%s"' % sql1.replace(' ', '_')
+        print
+        print '"%s"' % sql2.replace(' ', '_')
+        
 def syntax():
     progname = os.path.basename(sys.argv[0])
     print
