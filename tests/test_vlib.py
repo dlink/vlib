@@ -132,8 +132,7 @@ class TestUtils(unittest.TestCase):
         import utils
         Astr = '''ennie
 meanie
-mightie
-'''
+mightie'''
         A = ['ennie', 'meanie', 'mightie']
         self.assertEqual(Astr, utils.pretty(A))
 
@@ -141,8 +140,7 @@ mightie
         import utils
         Dstr = '''color: blue
 shape: square
-texture: groovy
-'''
+texture: groovy'''
         D = {'shape': 'square', 'texture': 'groovy', 'color': 'blue'}
         self.assertEqual(Dstr, utils.pretty(D))
 
@@ -150,8 +148,7 @@ texture: groovy
         import utils
         AAstr = '''a,b,c
 d,e,f
-g,h,i
-'''
+g,h,i'''
         AA = [['a', 'b', 'c'], ['d', 'e', 'f'], ['g','h', 'i']]
         self.assertEqual(AAstr, utils.pretty(AA))
 
@@ -171,13 +168,13 @@ g,h,i
         import utils
         d = datetime.datetime(2013,11,22,10,9,8)
         self.assertEqual(utils.format_datetime(d, format='ISO8601'),
-                         '2013-11-22T10:09:08Z')
+                         '2013-11-22T10:09:08-05:00')
 
     def test_format_datetime_ISO8601_without_time(self):
         import utils
         d = datetime.datetime(2013,11,22)
         self.assertEqual(utils.format_datetime(d, format='ISO8601'),
-                         '2013-11-22T00:00:00Z')
+                         '2013-11-22T00:00:00-05:00')
 
 def syntax():
     progname = os.path.basename(sys.argv[0])
