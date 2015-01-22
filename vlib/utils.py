@@ -367,3 +367,81 @@ def lazyproperty(fn):
         return getattr(self, attr_name)
     return _lazyproperty
 
+def rev_move(src, dst, max_revs=20, copy=False, debug=False):
+    """Rev destination file, if it exists, before moving src to dst.
+       Multiple calls to the same dst file might create this set of files:
+             tanner
+             tanner_1
+             tanner_2
+             tanner_3
+    """
+    #debug = True
+
+    import os
+
+    # use absolute path
+    dst = os.path.realpath(dst)
+
+    # append filename to destination if necesary.
+    if os.path.isdir(dst):
+        sname = os.path.basename(src)
+        dst += '/%s' % sname
+
+    # debug
+    if debug:
+        print "src:", src
+        print "dst:", dst
+    if not os.path.exists(src):
+        raise Exception('utils.revmove: Source %s does not exist' % src)
+
+    # rev dest file(s) if necessary.
+    if os.path.exists(dst):
+        import re
+        ddirname = os.path.dirname(dst)
+        dname    = os.path.basename(dst)
+        pattern = re.compile(u'%s(_(\d+)$|$)' % dname)
+
+        # gather up all the name and name_n files:
+        revfiles = {}
+        for file in os.listdir(ddirname):
+            match = pattern.match(file)
+            if match:
+                num = match.group(2)
+                num = int(num) if num else None
+                if num < max_revs and max_revs != 0:
+                    revfiles[num] = file
+                else:
+                    # purge files with revs greater than max_revs:
+                    killfile = "%s/%s" % (ddirname, file)
+                    if debug: print 'killing file: %s' % killfile
+                    if os.path.isdir(killfile):
+                        shutil.rmtree(killfile)
+                    else:
+                        os.remove(killfile)
+
+        # move them to new revs:
+        file_base = dname + '_'
+        for i in sorted(revfiles.keys(), reverse=True):
+            j = int(i) + 1 if i else 1
+            oldfile = "%s/%s" % (ddirname, revfiles[i])
+            newfile = "%s/%s_%s" % (ddirname, dname, j)
+            if ECHO_CMD or debug:
+                print "move %s %s" % (oldfile, newfile)
+            try:
+                shutil.copy2(oldfile, newfile)
+            except Exception, e:
+                shutil.copyfile(oldfile, newfile)
+    if ECHO_CMD or debug:
+        cmd = 'copy' if copy else 'move'
+        print "%s %s %s" % (cmd, src, dst)
+
+    if os.path.abspath(src) == os.path.abspath(dst):
+        return
+    try:
+        shutil.copy2(src, dst)
+    except Exception, e:
+        shutil.copyfile(src, dst)
+    if not copy:
+        os.remove(src)
+
+
