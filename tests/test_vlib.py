@@ -8,7 +8,7 @@ import datetime
 
 DEBUG = 0
 
-TEST_NAMES = ('All', 'Conf', 'DataTable', 'Db', 'Shell', 'Utils')
+TEST_NAMES = ('All', 'Conf', 'DataTable', 'Db', 'Shell', 'Utils', 'SqlUtils')
 
 
 # Fixtures
@@ -132,8 +132,7 @@ class TestUtils(unittest.TestCase):
         import utils
         Astr = '''ennie
 meanie
-mightie
-'''
+mightie'''
         A = ['ennie', 'meanie', 'mightie']
         self.assertEqual(Astr, utils.pretty(A))
 
@@ -141,8 +140,7 @@ mightie
         import utils
         Dstr = '''color: blue
 shape: square
-texture: groovy
-'''
+texture: groovy'''
         D = {'shape': 'square', 'texture': 'groovy', 'color': 'blue'}
         self.assertEqual(Dstr, utils.pretty(D))
 
@@ -150,8 +148,7 @@ texture: groovy
         import utils
         AAstr = '''a,b,c
 d,e,f
-g,h,i
-'''
+g,h,i'''
         AA = [['a', 'b', 'c'], ['d', 'e', 'f'], ['g','h', 'i']]
         self.assertEqual(AAstr, utils.pretty(AA))
 
@@ -171,14 +168,42 @@ g,h,i
         import utils
         d = datetime.datetime(2013,11,22,10,9,8)
         self.assertEqual(utils.format_datetime(d, format='ISO8601'),
-                         '2013-11-22T10:09:08Z')
+                         '2013-11-22T10:09:08-05:00')
 
     def test_format_datetime_ISO8601_without_time(self):
         import utils
         d = datetime.datetime(2013,11,22)
         self.assertEqual(utils.format_datetime(d, format='ISO8601'),
-                         '2013-11-22T00:00:00Z')
+                         '2013-11-22T00:00:00-05:00')
 
+class TestSqlUtils(unittest.TestCase):
+    '''Given sql statements already in pretty format
+       remove formating, reformat, and then compare.
+    '''
+
+    def xtest_sql_pretty1(self):
+        self.do_test(1)
+
+    def test_sql_pretty2(self):
+        self.do_test(2)
+
+    def do_test(self, test_num):
+        import re
+        import sqlutils
+        sql = open('testsqlpretty%s.sql' % test_num).read()
+        rawsql = re.sub(r'\s+', ' ', sql)
+        prettysql = sqlutils.pretty_sql(rawsql)
+
+        #self.show_before_and_after(sql, prettysql)
+        self.assertEqual(sql, prettysql)
+
+    def show_before_and_after(self, sql1, sql2):
+        '''For testing the test'''
+        print
+        print '"%s"' % sql1.replace(' ', '_')
+        print
+        print '"%s"' % sql2.replace(' ', '_')
+        
 def syntax():
     progname = os.path.basename(sys.argv[0])
     print
