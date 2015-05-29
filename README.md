@@ -135,7 +135,7 @@ The DataTable module provides a simple abstraction for creating and executing SQ
                  self.setColumns(['created',
                                   'count(*) as books'])
                  self.setFilters('created > "2000-01-01"')
-		 self.setGroupBy(1)
+                 self.setGroupBy(1)
                  return self.getTable()
 
 ### Logging Module
