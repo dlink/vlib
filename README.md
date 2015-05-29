@@ -138,7 +138,8 @@ The DataTable module provides a simple abstraction for creating and executing SQ
                  self.setGroupBy(1)
                  return self.getTable()
 
-     See, Also:  [DataTable Pydocs](http://crowfly.net/pydocs/vlib/datatable.html)
+     See, Also:
+     <a href="http://crowfly.net/pydocs/vlib/datatable.html">DataTable Pydocs</a>
 
 ### Logging Module
 
