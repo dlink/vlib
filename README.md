@@ -138,6 +138,8 @@ The DataTable module provides a simple abstraction for creating and executing SQ
                  self.setGroupBy(1)
                  return self.getTable()
 
+     See, Also:  [DataTable Pydocs](http://crowfly.net/pydocs/vlib/datatable.html)
+
 ### Logging Module
 
 The logging module uses log4r to produce consistent log entries that include date, hostname, and class name.
