@@ -139,7 +139,7 @@ The DataTable module provides a simple abstraction for creating and executing SQ
                  return self.getTable()
 
      See, Also:
-     <a href="http://crowfly.net/pydocs/vlib/datatable.html">DataTable Pydocs</a>
+     [DataTable Pydocs](http://crowfly.net/pydocs/vlib/datatable.html)
 
 ### Logging Module
 
