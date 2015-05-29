@@ -8,6 +8,8 @@ Developed over a period of time to address reoccurring requirements for most all
 
    * Database Support
 
+   * DataTable Support (an ORM Lite)
+
    * Logging Support (with email Support)
 
    * Object-like (dot) syntax for Dictionaries
@@ -100,6 +102,41 @@ The database modules provides a simple set of methods for talking to your databa
                 if results:
                    return results[0]
                 return []
+
+### DataTable Module
+
+The DataTable module provides a simple abstraction for creating and executing SQL Statements.  It relies on the Database Module for connection.
+
+      Usage:
+
+          from vlib import db
+          from vlib.datatable import DataTable
+
+          mydb = db.getInstance()
+
+          books = DataTable(mydb, 'books')
+          books.setColumns(['book_id as book_id', 'title'])
+          books.setFilters("created > '2015-05-01'");
+          for book in books.getTable():
+              print book
+
+     Usage as a base class:
+
+         from vlib import db
+         from vlib.datatable import DataTable
+
+         class Books(DataTable):
+
+             def __init__(self):
+                 db_ = db.getInstance()
+                 DataTable.__init__(self, db_, 'books')
+
+             def report(self):
+                 self.setColumns(['created',
+                                  'count(*) as books'])
+                 self.setFilters('created > "2000-01-01"')
+		 self.setGroupBy(1)
+                 return self.getTable()
 
 ### Logging Module
 
@@ -259,3 +296,4 @@ Install Mysql DB Connectorm, if you haven't done so already:
 Install vweb:
 
     pip install vlib
+
