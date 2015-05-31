@@ -1,5 +1,3 @@
-# $Id: datatable.py 38 2010-06-02 17:06:10Z rlowe $
-
 import re
 import sys
 import types
