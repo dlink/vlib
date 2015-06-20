@@ -11,9 +11,6 @@ import conf
 HOSTNAME=socket.gethostname()
 
 class CustomFormatter(logging.Formatter):
-    """Custom Log Formatter
-       Taken from Gloria's code in Bookserver
-    """
     def format(self, record):
         newmsg = "%s\t%s\t%s\t%s\t%s\t%s\t%s" % (
             datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
@@ -69,19 +66,20 @@ def getLogger(name):
     logger.addHandler(fh)
 
     # email hander
-    server, port = _conf['email']['server'].split(':')
-    username = _conf['email']['username']
-    password = _conf['email']['password']
-    fromaddr = _conf['email']['fromaddr']
-    notify   = _conf['notify']
-    subject = '%s - BIEngine Error' % _conf['environment']
-    gm = TlsSMTPHandler( (server, port),
-                         username,
-                         notify,
-                         subject,
-                         (username, password) )
-    gm.setLevel(logging.CRITICAL)
-    logger.addHandler(gm)
+    if _conf.has_key('email'):
+        server, port = _conf['email']['server'].split(':')
+        username = _conf['email']['username']
+        password = _conf['email']['password']
+        fromaddr = _conf['email']['fromaddr']
+        notify   = _conf['notify']
+        subject = '%s - BIEngine Error' % _conf['environment']
+        gm = TlsSMTPHandler( (server, port),
+                             username,
+                             notify,
+                             subject,
+                             (username, password) )
+        gm.setLevel(logging.CRITICAL)
+        logger.addHandler(gm)
 
     return logger
 
