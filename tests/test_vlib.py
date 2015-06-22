@@ -8,7 +8,8 @@ import datetime
 
 DEBUG = 0
 
-TEST_NAMES = ('All', 'Conf', 'DataTable', 'Db', 'Shell', 'Utils', 'SqlUtils')
+TEST_NAMES = ('All', 'Conf', 'DataTable', 'DataRecord', 'Db', 'Shell',
+              'Utils', 'SqlUtils')
 
 
 # Fixtures
@@ -84,6 +85,18 @@ class TestDataTable(unittest.TestCase):
         results = sort(self.datatable.describe())
         for old, new in zip(expected, results):
             self.assertDictEqual(old, new)
+
+class TestDataRecord(unittest.TestCase):
+    '''Test DataRecord'''
+
+    def setUp(self):
+        import db
+        self.db = db.getInstance()
+
+    def testLoad(self):
+        from datarecord import DataRecord
+        book = DataRecord(self.db, 'books', 1, primary_key='book_id')
+        self.assertEqual(book.book_name, 'baranoff')
 
 class TestDb(unittest.TestCase):
     '''Test Db'''
