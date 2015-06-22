@@ -1,12 +1,12 @@
 import os
-import MySQLdb
 import conf
 import singleton
 
 DEBUG = 0
 DEBUG_SQL = 0
 
-PORT = 3306
+MYSQL_PORT = 3306
+MSSQL_PORT = 1433
 AUTOCOMMIT = True
 
 DEBUG_PROCESSLIST = 0
@@ -35,8 +35,6 @@ class Db (object):
         self.lastrowid_store = None
         self.rowcount_store = None
 
-        # get port number:
-        params["port"] = params.get('port', PORT)
         self.params = params
         self.connect(params)
 
@@ -44,15 +42,34 @@ class Db (object):
         if DEBUG:
             print 'db:connect(%s)' % params
         self.close()
+        self.engine = engine = params['engine']
 
         # Create connection:
-        self.connection = MySQLdb.connect(host        = params["host"],
-                                          user        = params["user"],
-                                          passwd      = params["passwd"],
-                                          db          = params["db"],
-                                          port        = int(params["port"]),
-                                          charset     = "utf8",
-                                          )
+
+        if engine == 'mysql':
+            import MySQLdb
+            self.dbApi = MySQLdb
+            self.connection = MySQLdb.connect(
+                host    = params["host"],
+                user    = params["user"],
+                passwd  = params["passwd"],
+                db      = params["db"],
+                port    = int(params.get('port', MYSQL_PORT)),
+                charset = "utf8")
+
+        elif engine == 'mssql':
+            import pymssql
+            self.dbApi = pymssql
+            self.connection = pymssql.connect(
+                server   = params["host"],
+                user     = params["user"],
+                password = params["passwd"],
+                database = params["db"],
+                port     = int(params.get('port', MSSQL_PORT)),
+                charset  = "utf8")
+
+        else:
+            raise DbError('Unsupported database engine: %s' % engine)
 
         self.connection.autocommit(AUTOCOMMIT)
         
@@ -67,8 +84,11 @@ class Db (object):
         # A new object has to be created each time the db is accessed
         # anew, otherwise this self variable will cause great trouble.
         self.close_cursor()
-        self.cursor = self.connection.cursor(MySQLdb.cursors.DictCursor)
-        if 'timezone' in self.params:
+        if self.engine == 'mysql':
+            self.cursor = self.connection.cursor(self.dbApi.cursors.DictCursor)
+        else:
+            self.cursor = self.connection.cursor(as_dict=True)
+        if self.engine != 'mssql' and 'timezone' in self.params:
             self.cursor.execute("set time_zone = '%s'" % self.params['timezone'])
 
     def close_cursor(self):
@@ -81,10 +101,12 @@ class Db (object):
             print "SQL:", sql, params
         try:
             rv = self.cursor.execute(sql, params)
-            self.lastrowid_store = self.cursor.lastrowid
+            if self.engine != 'mssql':
+                # not working for mssql for some reason
+                self.lastrowid_store = self.cursor.lastrowid
             self.rowcount_store = self.cursor.rowcount
             return rv
-        except MySQLdb.OperationalError, e:
+        except self.dbApi.OperationalError, e:
             from datetime import datetime
             self.connect(self.params)
             self.open_cursor()
@@ -161,12 +183,8 @@ class SingletonFactory(object):
         if DEBUG:
             print "Factory.create(params={\n%s})"  % params
             
-        params["port"] = params.get('port', PORT)
-        if params['engine'] != 'mysql':
-            raise DbError('Unsupported database engine: %s' % params['engine'])
-
         # db connection signature:
-        signature = "%(engine)s:%(host)s:%(db)s:%(user)s:%(port)s:" \
+        signature = "%(engine)s:%(host)s:%(db)s:%(user)s:" \
             "%(dictcursor)s" % params
         if DEBUG: 
             print "Db.Factory: signature = %s" % signature,
