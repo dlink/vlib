@@ -232,7 +232,7 @@ class DataTable(object):
             sql_cmd,
             self.tablename,
             # support column names with spaces.
-            ', '.join(map(lambda x: "`%s`" % x, columns)),
+            ', '.join(map(self.sql_quote, columns)),
             ', '.join(['%s'] * len(values)),
         )
 
@@ -382,6 +382,14 @@ class DataTable(object):
         #if self.use_lowercase_names:
         #    self.table_columns = [c.lower() for c in self.table_columns]
         # '''
+
+    def sql_quote(self, column):
+        '''Return an SQL quoted column for the given db.engine'''
+
+        if self.db.engine == 'mssql':
+            return '[%s]' % column
+        else:
+            return '`%s`' % column
 
 def sqlize(s):
     '''Change single quotes to two single quotes.
