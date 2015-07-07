@@ -117,17 +117,32 @@ class Db (object):
             raise
         
     def query(self, sql, from_trans=False, params=None):
+        '''Use query for SQL statements that return data
+             eq.: select, desc, show tables, etc
+           Also see: execute()
+        '''
+        return self.execute(sql, from_trans, params, query=True)
+
+    def execute(self, sql, from_trans=False, params=None, query=False):
+        '''Execute an SQL statement that does not return data
+             eq.: insert, update, create, etc
+           Also see: query()
+
+           It was nec. to break query() and execute() into two methods
+           to support mssql driver.
+        '''
         try:
             # Cursor may be set in the startTransaction() call.
             if not from_trans:
                 self.open_cursor()
             self._execute(sql, params=params)
-            data = self.cursor.fetchall()
+            if query:
+                data = self.cursor.fetchall()
         finally:
             if not from_trans:
                 self.close_cursor()
-
-        return data
+        if query:
+            return data
 
     def startTransaction(self):
         self.open_cursor()

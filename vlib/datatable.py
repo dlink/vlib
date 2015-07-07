@@ -241,7 +241,7 @@ class DataTable(object):
         id = 0
         try:
             if self.writeback:
-                self.db.query(sql, params=values)
+                self.db.execute(sql, params=values)
                 id = self.db.lastrowid    # MySQLdb 1.2.1
 
         except Exception, e:
