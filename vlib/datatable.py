@@ -346,7 +346,7 @@ class DataTable(object):
         rowcount = 0
         try:
             if self.writeback:
-                self.db.query(sql)
+                self.db.execute(sql)
                 rowcount = self.db.rowcount
                 #if self.autocommit:
                 #    self.db.commit()
