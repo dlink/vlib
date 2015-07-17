@@ -18,7 +18,7 @@ class DataRecord(DataTable):
 
            class user(DataRecord):
               def __init__(self, id):
-                 Record.__init__(db.getInstance(), 'user', id)
+                 DataRecord.__init__(db.getInstance(), 'user', id)
 
            u = User(1)
            print u.name
