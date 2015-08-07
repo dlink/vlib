@@ -49,7 +49,7 @@ class DataRecord(DataTable):
                               (self.table.title(), self.primary_key, self.id))
 
         # store data in a dictionary
-        self.data = results[0]
+        self.data = odict(results[0])
 
         # store data as properties of self
         self.__dict__.update(results[0])
