@@ -232,7 +232,7 @@ class DataTable(object):
             sql_cmd,
             self.tablename,
             # support column names with spaces.
-            ', '.join(map(lambda x: "`%s`" % x, columns)),
+            ', '.join(map(self.sql_quote, columns)),
             ', '.join(['%s'] * len(values)),
         )
 
@@ -241,7 +241,7 @@ class DataTable(object):
         id = 0
         try:
             if self.writeback:
-                self.db.query(sql, params=values)
+                self.db.execute(sql, params=values)
                 id = self.db.lastrowid    # MySQLdb 1.2.1
 
         except Exception, e:
@@ -346,7 +346,7 @@ class DataTable(object):
         rowcount = 0
         try:
             if self.writeback:
-                self.db.query(sql)
+                self.db.execute(sql)
                 rowcount = self.db.rowcount
                 #if self.autocommit:
                 #    self.db.commit()
@@ -382,6 +382,14 @@ class DataTable(object):
         #if self.use_lowercase_names:
         #    self.table_columns = [c.lower() for c in self.table_columns]
         # '''
+
+    def sql_quote(self, column):
+        '''Return an SQL quoted column for the given db.engine'''
+
+        if self.db.engine == 'mssql':
+            return '[%s]' % column
+        else:
+            return '`%s`' % column
 
 def sqlize(s):
     '''Change single quotes to two single quotes.
