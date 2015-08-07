@@ -15,7 +15,7 @@ setup(
     url='https://github.com/dlink/vlib',
     packages=['vlib'],
     name='vlib',
-    version='0.13',
+    version='1.0.0',
     scripts=[],
     license='GNU General Public License (GPL)',
     install_requires=map(string.strip, open('requirements.txt').readlines()),
