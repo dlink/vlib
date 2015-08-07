@@ -7,7 +7,6 @@ v.1.0.0
   * config.database.engine: mssql
   * Db: conditionally introduce pymsql.connection
   * DataTable changes
-  * DataRecord changes
   * New Tests added
 * DataRecord: changed data to odict
 
