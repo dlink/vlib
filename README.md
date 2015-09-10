@@ -80,6 +80,7 @@ The database modules provides a simple set of methods for talking to your databa
              print row['name']
              
           # Without using config
+          # --------------------
           
           from vlib import Db
           mydb = Db({'engine':'mysql', 
@@ -89,7 +90,9 @@ The database modules provides a simple set of methods for talking to your databa
                      'passwd':'mepassword', 
                      'dictcursor':True })
                      
+                     
          # Real world example with Objects
+         # -------------------------------
          
          from vlib import db
 
@@ -104,6 +107,31 @@ The database modules provides a simple set of methods for talking to your databa
                 if results:
                    return results[0]
                 return []
+                
+                
+          # Connecting to multiple databases
+          # --------------------------------
+
+          # Define additional database connections in the config
+          # ro_database:
+          #    engine: mysql
+          #    host: localhost
+          #    db: vlibtests
+          #    user: vlibtests_ro
+          #    passwd: bogangles
+          
+          # __ ro/db.py __
+          from vlib import conf
+          from vlib.db import singletonFactory
+          
+          def getInstance():
+            conf_ = conf.getInstance()
+            return singletonFactory.create(**conf_.ro_database)
+            
+          # __ myprog.py __
+          import ro.db as rodb
+          my_rodb = rodb.getInstance()
+          print my_rodb.query('select * from customers')
 
 ### DataTable Module
 
