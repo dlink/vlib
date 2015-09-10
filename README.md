@@ -130,8 +130,8 @@ The DataTable module provides a simple abstraction for creating and executing SQ
          class Books(DataTable):
 
              def __init__(self):
-                 db_ = db.getInstance()
-                 DataTable.__init__(self, db_, 'books')
+                 sellf.db = db.getInstance()
+                 DataTable.__init__(self, self.db, 'books')
 
              def report(self):
                  self.setColumns(['created',
