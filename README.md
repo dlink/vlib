@@ -149,7 +149,7 @@ The logging module uses log4r to produce consistent log entries that include dat
 
      Usage:
 
-          # To setup a Logging instance, you define the following in yuor
+          # To setup a Logging instance, you define the following in your
           # config file.  The logging module uses the conf module to read it.
           #
           # logging:
