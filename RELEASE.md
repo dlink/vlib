@@ -1,9 +1,16 @@
 Release Notes - vlib
 ====================
-8/07/2015
+v.1.1.0
+-------
+9/15/2015
+
+* Microsoft SQL Server Support
+  * DB: begin transaction/rollback
 
 v.1.0.0
 -------
+8/07/2015
+
 * Microsoft SQL Server Support
   * config.database.engine: mssql
   * Db: conditionally introduce pymsql.connection

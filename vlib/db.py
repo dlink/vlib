@@ -146,7 +146,11 @@ class Db (object):
 
     def startTransaction(self):
         self.open_cursor()
-        self.query('start transaction',True)
+        if self.engine == 'mysql':
+            sqlcmd = 'start transaction'
+        else:
+            sqlcmd = 'begin transaction'
+        self.execute(sqlcmd)
     
     def rollback(self):
         self.connection.rollback()
