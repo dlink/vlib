@@ -330,3 +330,6 @@ Install vweb:
 
     pip install vlib
 
+__Red Hat__
+
+    yum install MySQL-python
