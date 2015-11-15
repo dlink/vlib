@@ -123,6 +123,45 @@ class TestDb(unittest.TestCase):
         localhost_datetime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M").lower()
         self.assertEqual(localhost_datetime, db_datetime)
 
+    def test_rollback(self):
+        max_book_id = self._getMaxBookId()
+        self.db.startTransaction()
+        try:
+            sql = 'insert into books (book_name) value ("Unit Test Book")'
+            self.db.execute(sql)
+            raise Exception('Test Error')
+        except Exception, e:
+            self.db.rollback()
+        max_book_id2 = self._getMaxBookId()
+        self.assertEqual(max_book_id, max_book_id2)
+        self._resetBooksAutoInc()
+
+    def test_commit(self):
+        max_book_id = self._getMaxBookId()
+        self.db.startTransaction()
+        try:
+            sql = 'insert into books (book_name) value ("Unit Test Book")'
+            self.db.execute(sql)
+            self.db.commit()
+        except Exception, e:
+            self.db.rollback()
+        max_book_id2 = self._getMaxBookId()
+        self.assertEqual(max_book_id+1, max_book_id2)
+        self._removeBook(max_book_id2)
+        self._resetBooksAutoInc()
+
+    def _getMaxBookId(self):
+        sql = 'select max(book_id) as max_book_id from books'
+        return self.db.query(sql)[0]['max_book_id']
+
+    def _removeBook(self, book_id):
+        sql = 'delete from books where book_id = %s' % book_id
+        self.db.execute(sql)
+
+    def _resetBooksAutoInc(self):
+        sql = 'alter table books auto_increment = 1'
+        self.db.execute(sql)
+
 class TestShell(unittest.TestCase):
     def setUp(self):
         from shell import Shell

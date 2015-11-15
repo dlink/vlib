@@ -1,5 +1,10 @@
 Release Notes - vlib
 ====================
+v.1.2.1
+-------
+
+* Tests: Db: New tests for startTransaction/Rollback/Commit
+
 v.1.2.0
 -------
 11/15/2015
