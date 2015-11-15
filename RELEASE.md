@@ -1,5 +1,11 @@
 Release Notes - vlib
 ====================
+v.1.2.0
+-------
+11/15/2015
+
+* New Model Class: Attribute
+
 v.1.1.0
 -------
 9/15/2015
