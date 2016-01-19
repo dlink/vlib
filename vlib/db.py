@@ -44,6 +44,11 @@ class Db (object):
         self.close()
         self.engine = engine = params['engine']
 
+        # support environement vars for passwd
+        passwd = params['passwd']
+        if passwd.startswith('$'):
+            passwd = os.environ[passwd[1:]]
+
         # Create connection:
 
         if engine == 'mysql':
@@ -52,7 +57,7 @@ class Db (object):
             self.connection = MySQLdb.connect(
                 host    = params["host"],
                 user    = params["user"],
-                passwd  = params["passwd"],
+                passwd  = passwd,
                 db      = params["db"],
                 port    = int(params.get('port', MYSQL_PORT)),
                 charset = "utf8")

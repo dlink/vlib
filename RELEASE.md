@@ -1,8 +1,14 @@
 Release Notes - vlib
 ====================
+v1.1.1
+-------
+01/19/2016
+
+* DB: Support environment vars for passwd
+
 v.1.1.0
 -------
-9/15/2015
+09/15/2015
 
 * Microsoft SQL Server Support
   * DB: begin transaction/rollback
