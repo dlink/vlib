@@ -1,10 +1,21 @@
 Release Notes - vlib
 ====================
-v1.1.1
+v1.2.2
 -------
 01/19/2016
 
 * DB: Support environment vars for passwd
+
+v.1.2.1
+-------
+
+* Tests: Db: New tests for startTransaction/Rollback/Commit
+
+v.1.2.0
+-------
+11/15/2015
+
+* New Model Class: Attribute
 
 v.1.1.0
 -------
