@@ -38,6 +38,11 @@ class Db (object):
         self.params = params
         self.connect(params)
 
+    def __repr__(self):
+        return '%s.%s:%s' % (self.__class__.__module__,
+                             self.__class__.__name__,
+                             self.params['db'])
+
     def connect(self, params):
         if DEBUG:
             print 'db:connect(%s)' % params

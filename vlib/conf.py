@@ -37,12 +37,13 @@ class Conf(object):
           print myconf.database.hostname
           
     '''
-    def __init__(self):
-        try:
-            filename = os.environ[CONF_ENV_VAR]
-        except KeyError, e:
-            raise ConfError('Environment variable %s not defined.' 
-                              % CONF_ENV_VAR)
+    def __init__(self, filename=None):
+        if not filename:
+            try:
+                filename = os.environ[CONF_ENV_VAR]
+            except KeyError, e:
+                raise ConfError('Environment variable %s not defined.'
+                                  % CONF_ENV_VAR)
 
         try:
             self.data = expandEnvVars(yaml.load(open(filename)))
@@ -74,7 +75,7 @@ def expandEnvVars(data):
                 v = v.replace('\$', '$')
             elif '$' in v:
                 envvar = re.sub(r'.*\$([^/.]*).*', r'\1', v)
-                envvar_val = os.getenv(envvar, 'Uknown_env_var:%s' % envvar)
+                envvar_val = os.getenv(envvar, 'Unknown_env_var:%s' % envvar)
                 v = re.sub('\$[^/.]*', envvar_val, v)
         data2[k] = v
     return data2

@@ -1,5 +1,12 @@
 Release Notes - vlib
 ====================
+v1.2.3
+------
+02/05/2016
+
+* Conf: Support passing in yaml files
+* Db: new __repr__ string
+
 v1.2.2
 -------
 01/19/2016
