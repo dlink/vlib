@@ -1,5 +1,11 @@
 Release Notes - vlib
 ====================
+v1.3.0
+------
+07/17/2016
+
+* Cli: Command Line Interface module
+
 v1.2.3
 ------
 02/05/2016
