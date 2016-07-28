@@ -1,4 +1,4 @@
-#!/bin/env python
+#!/usr/bin/env python
 
 # Command Line Interface
 
@@ -21,9 +21,13 @@ class CLI(object):
                  print self.cli.process()
 
              def process(self, *args):
+                args = list(args)
                 do something with args
 
-       See Test Class for example
+          if __name__ == '__main__':
+             MyClass().run()
+
+       See Test Class below for example
     '''
     def __init__(self, process_method, commands, options={}):
         self.process_method = process_method
