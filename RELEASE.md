@@ -1,5 +1,10 @@
 Release Notes - vlib
 ====================
+v1.3.1
+------
+
+* Logger: allow passing in log file name
+
 v1.3.0
 ------
 07/17/2016
