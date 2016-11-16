@@ -42,13 +42,14 @@ class TlsSMTPHandler(logging.handlers.SMTPHandler):
         smtp.sendmail(self.fromaddr, self.toaddrs, msg)
         smtp.quit()
 
-def getLogger(name):
+def getLogger(name, logfile=None):
     '''A Factory mentod.
        Returns: An instance of Python Logger
     '''
     _conf = conf.Factory.create().data
     level   = _conf['logging']['level']
-    logfile = _conf['logging']['filename']
+    if not logfile:
+        logfile = _conf['logging']['filename']
 
     formatter = CustomFormatter()
 
