@@ -117,7 +117,6 @@ class Db (object):
             self.rowcount_store = self.cursor.rowcount
             return rv
         except self.dbApi.OperationalError, e:
-            from datetime import datetime
             self.connect(self.params)
             self.open_cursor()
             rv = self.cursor.execute(sql, params)
