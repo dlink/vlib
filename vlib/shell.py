@@ -24,6 +24,7 @@ class Shell(object):
         self.echo_cmd = ECHO_CMD
         self.dry_run = DRY_RUN
         self.stderr_okay = False
+        self.returncode_okay = False
 
     def cmd(self, cmd):
         if self.echo_cmd:
@@ -40,7 +41,7 @@ class Shell(object):
             raise ShellError(stderr)
             
         # raise error on retcode
-        if process.returncode:
+        if process.returncode and not self.returncode_okay:
             raise ShellError('Command failed:\n%s\nreturncode: %s\n' 
                              '%s%s' % 
                              (cmd, process.returncode, stdout.strip(), 
