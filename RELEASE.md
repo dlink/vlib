@@ -2,6 +2,7 @@ Release Notes - vlib
 ====================
 v1.3.2
 ------
+03/24/2017
 
 * DataTable: Bug fix on setFilter for None values
 * Shell: New feature: returncode_okay = true/false
