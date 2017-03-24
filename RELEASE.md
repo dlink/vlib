@@ -1,5 +1,12 @@
 Release Notes - vlib
 ====================
+v1.3.2
+------
+
+* DataTable: Bug fix on setFilter for None values
+* Shell: New feature: returncode_okay = true/false
+* ElapseTime: New module contributed by Doug Farrell
+
 v1.3.1
 ------
 
