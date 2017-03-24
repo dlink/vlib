@@ -101,7 +101,7 @@ class DataTable(object):
             #dict
             new_filters = []
             for k, v in filters.items():
-                if not v:
+                if v is None:
                     new_filters.append("%s is null" % k)
                 elif isinstance(v, list):
                     vals = ["'%s'" % sqlize(val) for val in v]
