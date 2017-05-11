@@ -375,6 +375,8 @@ def rev_move(src, dst, max_revs=20, copy=False, debug=False):
              tanner_2
              tanner_3
     """
+    import shutil
+
     #debug = True
 
     import os
@@ -425,13 +427,13 @@ def rev_move(src, dst, max_revs=20, copy=False, debug=False):
             j = int(i) + 1 if i else 1
             oldfile = "%s/%s" % (ddirname, revfiles[i])
             newfile = "%s/%s_%s" % (ddirname, dname, j)
-            if ECHO_CMD or debug:
+            if debug:
                 print "move %s %s" % (oldfile, newfile)
             try:
                 shutil.copy2(oldfile, newfile)
             except Exception, e:
                 shutil.copyfile(oldfile, newfile)
-    if ECHO_CMD or debug:
+    if debug:
         cmd = 'copy' if copy else 'move'
         print "%s %s %s" % (cmd, src, dst)
 
