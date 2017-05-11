@@ -53,3 +53,8 @@ class DataRecord(DataTable):
 
         # store data as properties of self
         self.__dict__.update(results[0])
+
+    @property
+    def fields(self):
+        '''Return DataRecord field names'''
+        return sorted(self.data.keys())
