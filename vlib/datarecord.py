@@ -1,6 +1,8 @@
 from vlib.datatable import DataTable
 from vlib.odict import odict
 
+from vlib.utils import is_int
+
 DEBUG = 0
 
 class DataRecordError(Exception): pass
@@ -12,16 +14,22 @@ class DataRecord(DataTable):
         '''Create a Record Object given
               a vlib.db Object, a table name, and a record Id
 
+           id column can also be an sql where clause, like
+               'order_no="TC-100903401"'
+
            Meant to be subclassed, as follows:
 
            from datarecord import DataRecord
 
-           class user(DataRecord):
+           class User(DataRecord):
               def __init__(self, id):
                  DataRecord.__init__(db.getInstance(), 'user', id)
 
            u = User(1)
            print u.name
+
+           u2 = User("name='Fernandez'")
+           print u2.phone
 
         '''
         self.db    = db      
@@ -42,7 +50,13 @@ class DataRecord(DataTable):
              message.id
              message.created
         '''
-        self.setFilters('%s=%s' % (self.primary_key, self.id))
+        if is_int(self.id):
+            filter = '%s=%s' % (self.primary_key, self.id)
+        else:
+            # id is an sql where_clause
+            filter = self.id
+
+        self.setFilters(filter)
         results = self.getTable()
         if not results:
             raise DataRecordError('%s table: Record not found, %s: %s' %

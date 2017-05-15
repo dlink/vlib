@@ -446,4 +446,10 @@ def rev_move(src, dst, max_revs=20, copy=False, debug=False):
     if not copy:
         os.remove(src)
 
-
+def is_int(s):
+    '''Return True if s can be converted to an int'''
+    try:
+        int(s)
+        return True
+    except ValueError:
+        return False
