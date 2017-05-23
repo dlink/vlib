@@ -6,6 +6,7 @@ from vlib.utils import is_int
 DEBUG = 0
 
 class DataRecordError(Exception): pass
+class DataRecordNotFound(DataRecordError): pass
 
 class DataRecord(DataTable):
     '''Preside over a single Db Record'''
@@ -59,7 +60,7 @@ class DataRecord(DataTable):
         self.setFilters(filter)
         results = self.getTable()
         if not results:
-            raise DataRecordError('%s table: Record not found, %s: %s' %
+            raise DataRecordNotFound('%s table: Record not found, %s: %s' %
                               (self.table.title(), self.primary_key, self.id))
 
         # store data in a dictionary
