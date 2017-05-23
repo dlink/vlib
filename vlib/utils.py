@@ -453,3 +453,8 @@ def is_int(s):
         return True
     except ValueError:
         return False
+
+def strip_html(html):
+    if isinstance(html, (str, unicode)):
+        import re
+        return re.sub('<[^>]*>', '', html).strip()
