@@ -1,2 +1,5 @@
-include README.md
 include requirements.txt
+include RELEASE.md
+include vlib/vlibconf.template.yml
+include LICENSE.txt
+include README.md
