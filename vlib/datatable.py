@@ -24,7 +24,7 @@ class DataTable(object):
         self.filters   = []
         self.group_by  = []
         self.order_by  = []
-        self.limit     = ''
+        self.limit     = None
         self.debug     = DEBUG
         self.debug_sql = DEBUG_SQL
         self.writeback = WRITEBACK
@@ -193,7 +193,7 @@ class DataTable(object):
         if self.order_by:
             order_by = 'order by %s' % ', '.join(self.order_by)
         limit = ''
-        if self.limit:
+        if self.limit is not None:
             limit = 'limit %s' % self.limit
         sql = '%s %s %s %s %s %s' % (select, From, where, group_by, order_by, 
                                      limit)
