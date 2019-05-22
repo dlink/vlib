@@ -30,6 +30,28 @@ class Attributes (DataTable):
         self._loadTable()
         self._setConstants()
 
+    def getIdFromCode(self, code, or_add=0):
+        code = str(code)
+        try:
+            id = self.code_map[code.lower()]
+        except:
+            if not or_add:
+                raise AttributeNotFoundError(
+                    "%s: code '%s' not found" % (self.tablename, code))
+            else:
+                # add rec
+                rec = {'code'       : code.lower(),
+                       'name'       : code.replace('_', ' ').title(),
+                       'description': code.replace('_', ' ').title(),
+                       'active'     : True}
+                id = self.insertRow(rec)
+                
+                # update internal dicts
+                self._table[id] = rec
+                self._code_map[code.lower()] = id
+                self._name_map[code.lower()] = id
+        return id
+
     @property
     def table(self):
         '''Return list of Dicts of all rows'''
