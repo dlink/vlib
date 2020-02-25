@@ -21,7 +21,7 @@ class TestConf(unittest.TestCase):
     '''Test Conf'''
 
     def setUp(self):
-        import conf
+        from vlib import conf
         self.conf = conf.getInstance()
 
     def test_getvar(self):
@@ -37,8 +37,8 @@ class TestDataTable(unittest.TestCase):
     '''Test DataTable'''
 
     def setUp(self):
-        import db
-        from datatable import DataTable
+        from vlib import db
+        from vlib.datatable import DataTable
 
         self.db = db.getInstance()
         self.datatable = DataTable(self.db, 'disciplines')
@@ -90,11 +90,11 @@ class TestDataRecord(unittest.TestCase):
     '''Test DataRecord'''
 
     def setUp(self):
-        import db
+        from vlib import db
         self.db = db.getInstance()
 
     def testLoad(self):
-        from datarecord import DataRecord
+        from vlib.datarecord import DataRecord
         book = DataRecord(self.db, 'books', 1, primary_key='book_id')
         self.assertEqual(book.book_name, 'baranoff')
 
@@ -102,7 +102,7 @@ class TestDb(unittest.TestCase):
     '''Test Db'''
 
     def setUp(self):
-        import db
+        from vlib import db
 
         self.db = db.getInstance()
 
@@ -112,7 +112,7 @@ class TestDb(unittest.TestCase):
         self.assertEqual(results[0]['book_name'], 'baranoff')
 
     def test_timezone(self):
-        import conf
+        from vlib import conf
         sql = 'select @@session.time_zone as time_zone'
         db_timezone = self.db.query(sql)[0]['time_zone']
         self.assertEqual(conf.getInstance().database.timezone, db_timezone)
@@ -164,7 +164,7 @@ class TestDb(unittest.TestCase):
 
 class TestShell(unittest.TestCase):
     def setUp(self):
-        from shell import Shell
+        from vlib.shell import Shell
         self.shell = Shell()
 
     def test_ls(self):
@@ -176,56 +176,56 @@ class TestUtils(unittest.TestCase):
         pass
 
     def test_pretty_str(self):
-        import utils
+        import vlib.utils
         str = 'This is a string'
-        self.assertEqual(str, utils.pretty(str))
+        self.assertEqual(str, vlib.utils.pretty(str))
 
     def test_pretty_list(self):
-        import utils
+        import vlib.utils
         Astr = '''ennie
 meanie
 mightie'''
         A = ['ennie', 'meanie', 'mightie']
-        self.assertEqual(Astr, utils.pretty(A))
+        self.assertEqual(Astr, vlib.utils.pretty(A))
 
     def test_pretty_dict(self):
-        import utils
+        import vlib.utils
         Dstr = '''color: blue
 shape: square
 texture: groovy'''
         D = {'shape': 'square', 'texture': 'groovy', 'color': 'blue'}
-        self.assertEqual(Dstr, utils.pretty(D))
+        self.assertEqual(Dstr, vlib.utils.pretty(D))
 
     def test_pretty_list_of_lists(self):
-        import utils
+        import vlib.utils
         AAstr = '''a,b,c
 d,e,f
 g,h,i'''
         AA = [['a', 'b', 'c'], ['d', 'e', 'f'], ['g','h', 'i']]
-        self.assertEqual(AAstr, utils.pretty(AA))
+        self.assertEqual(AAstr, vlib.utils.pretty(AA))
 
     def test_format_datetime(self):
-        import utils
+        import vlib.utils
         d = datetime.datetime(2013,11,22,10,9,8)
-        self.assertEqual(utils.format_datetime(d),
+        self.assertEqual(vlib.utils.format_datetime(d),
                          '11/22/2013 10:09 am')
 
     def test_format_datetime_with_sections(self):
-        import utils
+        import vlib.utils
         d = datetime.datetime(2013,11,22,10,9,8)
-        self.assertEqual(utils.format_datetime(d, with_seconds=1),
+        self.assertEqual(vlib.utils.format_datetime(d, with_seconds=1),
                          '11/22/2013 10:09:08 am')
 
     def test_format_datetime_ISO8601(self):
-        import utils
+        import vlib.utils
         d = datetime.datetime(2013,11,22,10,9,8)
-        self.assertEqual(utils.format_datetime(d, format='ISO8601'),
+        self.assertEqual(vlib.utils.format_datetime(d, format='ISO8601'),
                          '2013-11-22T10:09:08-05:00')
 
     def test_format_datetime_ISO8601_without_time(self):
-        import utils
+        import vlib.utils
         d = datetime.datetime(2013,11,22)
-        self.assertEqual(utils.format_datetime(d, format='ISO8601'),
+        self.assertEqual(vlib.utils.format_datetime(d, format='ISO8601'),
                          '2013-11-22T00:00:00-05:00')
 
 class TestSqlUtils(unittest.TestCase):
@@ -241,10 +241,10 @@ class TestSqlUtils(unittest.TestCase):
 
     def do_test(self, test_num):
         import re
-        import sqlutils
+        import vlib.sqlutils
         sql = open('testsqlpretty%s.sql' % test_num).read()
         rawsql = re.sub(r'\s+', ' ', sql)
-        prettysql = sqlutils.pretty_sql(rawsql)
+        prettysql = vlib.sqlutils.pretty_sql(rawsql)
 
         #self.show_before_and_after(sql, prettysql)
         self.assertEqual(sql, prettysql)
