@@ -73,7 +73,7 @@ class CLI(object):
         retcode = 0
         try:
             results = self.process_method(*args)
-        except Exception, e:
+        except Exception as e:
             if self.hasoption.get('v'):
                 raise
             results = "Error: %s: %s" % (e.__class__.__name__, str(e))
@@ -86,33 +86,33 @@ class CLI(object):
     def syntax(self, emsg=None):
         prog = os.path.basename(sys.argv[0])
         if emsg:
-            print emsg
+            print(emsg)
         ws = ' '*len(prog)
 
         options = '[OPTIONS]'
 
-        print
+        print()
         for i, command in enumerate(self.commands):
             a = prog if i == 0 else ' '*len(prog)
             b = options if i == 0 else ' '*len(options)
-            print ' %s %s %s' % (a, b, command)
-        print
-        for o, desc in self.options.items():
-            print '%s -%s: %s' % (' '*len(prog), o, desc)
-        print
+            print(' %s %s %s' % (a, b, command))
+        print()
+        for o, desc in list(self.options.items()):
+            print('%s -%s: %s' % (' '*len(prog), o, desc))
+        print()
         sys.exit(1)
 
     def are_you_sure(self, msg=None):
         if msg:
-            print msg
-            print
-        print 'Are you sure? ',
+            print(msg)
+            print()
+        print('Are you sure? ', end=' ')
 
         yn = sys.stdin.readline().strip().lower()
         if yn not in ('y', 'yes', 'yea', 'yeah', 'sure', 'si'):
-            print 'Existing'
+            print('Existing')
             sys.exit(1)
-        print
+        print()
 
 def print_pretty(results):
     if not results:
@@ -121,16 +121,16 @@ def print_pretty(results):
     if isinstance(results, (list, tuple)):
         if isinstance(results[0], (list, tuple)):
             for row in results:
-                print ",".join(map(str, row)),
-                print
+                print(",".join(map(str, row)), end=' ')
+                print()
         else:
-            print "\n".join(map(str, results))
+            print("\n".join(map(str, results)))
     elif isinstance(results, dict):
         keys = sorted(results.keys())
         for k in keys:
-            print "%s: %s" % (k, results[k])
+            print("%s: %s" % (k, results[k]))
     else:
-        print results
+        print(results)
 
 class Test(object):
         

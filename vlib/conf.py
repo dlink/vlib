@@ -4,7 +4,7 @@ import os
 import re
 import yaml
 
-from odict import odict
+from .odict import odict
 
 # Set this to whatever you want.
 CONF_ENV_VAR = 'VCONF'
@@ -41,22 +41,22 @@ class Conf(object):
         if not filename:
             try:
                 filename = os.environ[CONF_ENV_VAR]
-            except KeyError, e:
+            except KeyError as e:
                 raise ConfError('Environment variable %s not defined.'
                                   % CONF_ENV_VAR)
 
         try:
             self.data = expandEnvVars(yaml.load(open(filename)))
-        except Exception, e:
+        except Exception as e:
             raise ConfError('Unable to parse yaml: %s\n%s: %s' 
                             % (filename, e.__class__.__name__, e))
 
     def toStr(self):
         o = []
-        for k, v in self.data.items():
+        for k, v in list(self.data.items()):
             if isinstance(v, dict):
                 o2 = []
-                for k2, v2 in v.items():
+                for k2, v2 in list(v.items()):
                     o2.append('   %s: %s' % (k2, v2))
                 v = '\n' + '\n'.join(o2)
             o.append('%s: %s' % (k, v))
@@ -67,7 +67,7 @@ def expandEnvVars(data):
        Also returns data as a ConfElement
     '''
     data2 = ConfElement()
-    for k, v in data.items():
+    for k, v in list(data.items()):
         if isinstance(v, dict):
             v = expandEnvVars(v)
         elif isinstance(v, str):
@@ -104,6 +104,6 @@ def getInstance():
 
 if __name__ == '__main__':
     conf = Conf()
-    print conf.toStr()
+    print(conf.toStr())
 
 

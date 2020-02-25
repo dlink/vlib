@@ -130,7 +130,7 @@ class TestDb(unittest.TestCase):
             sql = 'insert into books (book_name) value ("Unit Test Book")'
             self.db.execute(sql)
             raise Exception('Test Error')
-        except Exception, e:
+        except Exception as e:
             self.db.rollback()
         max_book_id2 = self._getMaxBookId()
         self.assertEqual(max_book_id, max_book_id2)
@@ -143,7 +143,7 @@ class TestDb(unittest.TestCase):
             sql = 'insert into books (book_name) value ("Unit Test Book")'
             self.db.execute(sql)
             self.db.commit()
-        except Exception, e:
+        except Exception as e:
             self.db.rollback()
         max_book_id2 = self._getMaxBookId()
         self.assertEqual(max_book_id+1, max_book_id2)
@@ -251,16 +251,16 @@ class TestSqlUtils(unittest.TestCase):
 
     def show_before_and_after(self, sql1, sql2):
         '''For testing the test'''
-        print
-        print '"%s"' % sql1.replace(' ', '_')
-        print
-        print '"%s"' % sql2.replace(' ', '_')
+        print()
+        print('"%s"' % sql1.replace(' ', '_'))
+        print()
+        print('"%s"' % sql2.replace(' ', '_'))
         
 def syntax():
     progname = os.path.basename(sys.argv[0])
-    print
-    print "  syntax: %s [%s]+" % (progname, ' | '.join(TEST_NAMES))
-    print
+    print()
+    print("  syntax: %s [%s]+" % (progname, ' | '.join(TEST_NAMES)))
+    print()
     sys.exit(1)
 
 if __name__ == '__main__':
@@ -268,7 +268,7 @@ if __name__ == '__main__':
         syntax()
 
     if any(t not in TEST_NAMES for t in sys.argv[1:]):
-        print "Test name must be one (or more) of:", ", ".join(TEST_NAMES)
+        print("Test name must be one (or more) of:", ", ".join(TEST_NAMES))
         sys.exit(1)
 
     if  sys.argv[1] == 'All':

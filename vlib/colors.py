@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from string import digits, punctuation
-from odict import odict
+from .odict import odict
 
 COLORS = odict({'darkred'     : '\033[0;31m',
                 'darkgreen'   : '\033[0;32m',
@@ -64,7 +64,7 @@ def colorize(s, **kwds):
 
 
 def decolorize(s):
-    for c in COLORS.values():
+    for c in list(COLORS.values()):
         s = s.replace(c, '')
     return s
 
@@ -96,7 +96,7 @@ def colorcall(func_method, *args):
     return s
 
 def label(l, s):
-    l, s = map(str, (l, s))
+    l, s = list(map(str, (l, s)))
     if '\033' not in l:
         l = lightblue(l)
     if '\033' not in s:

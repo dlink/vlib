@@ -6,7 +6,7 @@ import os.path
 import smtplib
 import socket
 
-import conf
+from . import conf
 
 HOSTNAME=socket.gethostname()
 
@@ -67,7 +67,7 @@ def getLogger(name, logfile=None):
     logger.addHandler(fh)
 
     # email hander
-    if _conf.has_key('email'):
+    if 'email' in _conf:
         server, port = _conf['email']['server'].split(':')
         username = _conf['email']['username']
         password = _conf['email']['password']

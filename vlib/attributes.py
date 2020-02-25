@@ -76,7 +76,7 @@ class Attributes (DataTable):
         '''Return a list of columns values,
            Where column is a column name in the table.
         '''
-        return [self.table[x][column] for x in self._table.keys()]
+        return [self.table[x][column] for x in list(self._table.keys())]
 
     def _loadTable (self):
         '''Loads database table.
@@ -110,7 +110,7 @@ class Attributes (DataTable):
         '''Set up constants like states.INPROGRESS, states.ERROR, etc.,
            or roles.USER, roles.AUTHOR, etc.,
            based on the table's code field.                                                      '''
-        for id, data in self.table.items():
+        for id, data in list(self.table.items()):
             self.__setattr__(data['code'].upper(), id)
 
     def getColumnValue (self, id, column):
@@ -192,9 +192,9 @@ def test():
     states = Attributes(db.getInstance(),
                             'usage_time_frames',
                             'id')
-    print 'List:', states.list
-    print 'Code Map:', states.code_map
-    print 'Name Map:',states.name_map
+    print('List:', states.list)
+    print('Code Map:', states.code_map)
+    print('Name Map:',states.name_map)
 
 if __name__ == '__main__':
     test()
