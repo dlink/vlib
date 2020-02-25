@@ -46,7 +46,8 @@ class Conf(object):
                                   % CONF_ENV_VAR)
 
         try:
-            self.data = expandEnvVars(yaml.load(open(filename)))
+            self.data = expandEnvVars(yaml.load(open(filename),
+                                                Loader=yaml.Loader))
         except Exception as e:
             raise ConfError('Unable to parse yaml: %s\n%s: %s' 
                             % (filename, e.__class__.__name__, e))
