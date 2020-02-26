@@ -9,7 +9,7 @@ import datetime
 DEBUG = 0
 
 TEST_NAMES = ('All', 'Attribute', 'Conf', 'DataTable', 'DataRecord', 'Db',
-              'Shell', 'Utils', 'SqlUtils')
+              'Odict', 'Shell', 'Utils', 'SqlUtils')
 
 
 # Fixtures
@@ -223,6 +223,15 @@ class TestDb(unittest.TestCase):
     def _resetBooksAutoInc(self):
         sql = 'alter table books auto_increment = 1'
         self.db.execute(sql)
+
+class TestOdict(unittest.TestCase):
+    def test_odict(self):
+        from vlib.odict import odict, OdictError
+        COLOR = 'red'
+        d = odict(color=COLOR)
+        self.assertEqual(d.color, COLOR)
+        with self.assertRaises(OdictError):
+            d.non_existent_field
 
 class TestShell(unittest.TestCase):
     def setUp(self):
