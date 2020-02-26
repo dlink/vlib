@@ -54,17 +54,6 @@ def console_width():
     # sensible default
     return 80
 
-def echoif(switch):
-    '''Decorator - calls echoized
-       eq.:
-         @echoif(DEBUG_CALLSTACK)
-         class OrderPricing(objec):
-            ...
-    '''
-    if switch:
-        return echoized
-    return lambda unchanged: unchanged
-
 def uniqueId(with_millisec=False):
     """Return system time to the millisec as set of numbers"""
     d = str(datetime.now())
