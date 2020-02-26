@@ -13,3 +13,7 @@ class TestDataRecord(unittest.TestCase):
         book = DataRecord(self.db, 'books', 1, primary_key='book_id')
         self.assertEqual(book.book_name, 'baranoff')
 
+    def testfields(self):
+        ID_FIELD = 'book_id'
+        book = DataRecord(self.db, 'books', 1, primary_key='book_id')
+        self.assertEqual(book.fields[0], ID_FIELD)
