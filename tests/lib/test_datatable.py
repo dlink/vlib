@@ -1,12 +1,12 @@
 import unittest
 
+from vlib import db
+from vlib.datatable import DataTable
+
 class TestDataTable(unittest.TestCase):
     '''Test DataTable'''
 
     def setUp(self):
-        from vlib import db
-        from vlib.datatable import DataTable
-
         self.db = db.getInstance()
         self.datatable = DataTable(self.db, 'disciplines')
 

@@ -1,5 +1,7 @@
 import unittest
 
+from vlib import conf
+
 # Fixtures
 DATABASE_ENGINE='mysql'
 SHELL='/bin/bash'
@@ -9,7 +11,6 @@ class TestConf(unittest.TestCase):
     '''Test Conf'''
 
     def setUp(self):
-        from vlib import conf
         self.conf = conf.getInstance()
 
     def test_getvar(self):

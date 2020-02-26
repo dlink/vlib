@@ -1,4 +1,7 @@
 import unittest
+import re
+
+import vlib.sqlutils
 
 class TestSqlUtils(unittest.TestCase):
     '''Given sql statements already in pretty format
@@ -12,8 +15,6 @@ class TestSqlUtils(unittest.TestCase):
         self.do_test(2)
 
     def do_test(self, test_num):
-        import re
-        import vlib.sqlutils
         sql = open('testsqlpretty%s.sql' % test_num).read()
         rawsql = re.sub(r'\s+', ' ', sql)
         prettysql = vlib.sqlutils.pretty_sql(rawsql)

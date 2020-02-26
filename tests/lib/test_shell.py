@@ -1,8 +1,9 @@
 import unittest
 
+from vlib.shell import Shell
+
 class TestShell(unittest.TestCase):
     def setUp(self):
-        from vlib.shell import Shell
         self.shell = Shell()
 
     def test_ls(self):

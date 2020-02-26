@@ -1,14 +1,15 @@
 import unittest
 
+from vlib import db
+from vlib.attributes import \
+    Attributes, AttributesError, AttributesDataNotFoundError, plural2singular
+
 class TestAttribute(unittest.TestCase):
 
     def setUp(self):
-        from vlib import db
-        from vlib.attributes import Attributes
         self.disciplines = Attributes(db.getInstance(), 'disciplines')
 
     def test_getIdFromCode(self):
-        from vlib.attributes import AttributesDataNotFoundError
         ID, CODE = 2, 'biology'
         BAD_CODE = 'mud'
         self.assertEqual(self.disciplines.getIdFromCode(CODE), ID)
@@ -20,7 +21,6 @@ class TestAttribute(unittest.TestCase):
         self.assertEqual(self.disciplines.list[0], FIRST_D)
 
     def test_getColumnValue(self):
-        from vlib.attributes import AttributesDataNotFoundError
         ID, COLUMN, VALUE = 2, 'name', 'Biology'
         BAD_COLUMN = 'mud'
         self.assertEqual(self.disciplines.getColumnValue(ID, COLUMN), VALUE)
@@ -28,7 +28,6 @@ class TestAttribute(unittest.TestCase):
             self.disciplines.getColumnValue(ID, BAD_COLUMN)
 
     def test_getId(self):
-        from vlib.attributes import AttributesError,AttributesDataNotFoundError
         ID, CODE, NAME = 2, 'biology', 'Biology'
         BAD_CODE, BAD_NAME = 'mud', 'MUD'
         self.assertEqual(self.disciplines.getId(CODE), ID)
@@ -54,7 +53,6 @@ class TestAttribute(unittest.TestCase):
 
 
     def test_plural2singular(self):
-        from vlib.attributes import plural2singular
         for S, P in (('book', 'books'),
                      ('country', 'countries'),
                      ('status', 'statuses'),

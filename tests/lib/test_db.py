@@ -1,12 +1,13 @@
 import unittest
 import datetime
 
+from vlib import conf
+from vlib import db
+
 class TestDb(unittest.TestCase):
     '''Test Db'''
 
     def setUp(self):
-        from vlib import db
-
         self.db = db.getInstance()
 
     def test_query(self):
@@ -15,7 +16,6 @@ class TestDb(unittest.TestCase):
         self.assertEqual(results[0]['book_name'], 'baranoff')
 
     def test_timezone(self):
-        from vlib import conf
         sql = 'select @@session.time_zone as time_zone'
         db_timezone = self.db.query(sql)[0]['time_zone']
         self.assertEqual(conf.getInstance().database.timezone, db_timezone)
