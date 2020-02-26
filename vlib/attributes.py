@@ -36,7 +36,7 @@ class Attributes (DataTable):
             id = self.code_map[code.lower()]
         except:
             if not or_add:
-                raise AttributeNotFoundError(
+                raise AttributesDataNotFoundError(
                     "%s: code '%s' not found" % (self.tablename, code))
             else:
                 # add rec
@@ -170,15 +170,15 @@ def plural2singular(name):
        eq. boats --> boat
            parties --> party
     '''
+    # spec. cases
+    if name == 'statuses':
+        return 'status'
+
     name2 = name
 
     # ies --> y
     if name[-3:] == 'ies':
         name2 = name[0:-3] + 'y'
-
-    # statuses -> status
-    elif name[-2:] == 'es':
-        name2 = name[0:-2]
 
     # boats --> boat
     # access --> access (no change)
