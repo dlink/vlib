@@ -4,7 +4,6 @@ import os
 from datetime import datetime
 
 from functools import update_wrapper
-from .colors import *
 
 class MissingArguments(Exception): pass
 
@@ -65,60 +64,6 @@ def echoif(switch):
     if switch:
         return echoized
     return lambda unchanged: unchanged
-
-
-def echoized(func_or_cls):
-    """Decorator
-       Echos a function's signature prior to evaluating it, of does the
-        same for all methods of a class. 
-
-        ISSUES:
-          If used on a single method of a class, it fails to identify the
-          arg names, and self is not distinguished from other args.
-          
-          (or in conjunction with @cached)
-          
-        eq.:
-          op = OrderPricing()
-          op = echoized(OrderPricing)()
-
-          e = Editions(nid=nid)
-          e = echoized(Editions)(nid=nid)
-    """
-    from inspect import getargspec, isclass, ismethod
-    def newf(*args, **kwds):
-        'Echos function signature'
-        try:
-            spec = getargspec(f)
-        except Exception as e:
-            spec = getargspec(f.__call__)
-        sargs = list(args)
-        cls = ''
-        # pull the class name in front for instance and class methods
-        if spec.args:       
-            arg0 = spec.args.pop(0)
-            if arg0 == 'self':
-                cls = sargs.pop(0).__class__.__name__
-            elif arg0 == 'cls':
-                cls = sargs.pop(0).__name__
-        s = ['%s=%s' % (sa, a) for sa, a in zip(spec.args, sargs)]
-        s.extend(list(map(str, sargs[len(spec.args):])))           # *args
-        s.extend('%s=%s' % (k, v) for k, v in list(kwds.items()))  # **kwds
-        print(colorcall((f.__name__, cls), *s))
-        return f(*args, **kwds)
-    # if class, add echoizing to all methods in class
-    if isclass(func_or_cls):
-        cls = func_or_cls
-        for name in cls.__dict__:
-            item = getattr(cls, name)
-            if ismethod(item) or hasattr(item, '__call__'):
-                setattr(cls, name, echoized(item))
-        return cls
-    f = func_or_cls
-    if f.__doc__:
-        newf.__doc__ = '\n'.join([f.__doc__, newf.__doc__])
-    # use new composite docstring instead of just orig func's
-    return update_wrapper(newf, f, assigned=('__module__', '__name__'))
 
 def uniqueId(with_millisec=False):
     """Return system time to the millisec as set of numbers"""
