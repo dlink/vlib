@@ -118,7 +118,7 @@ class DataTable(object):
         subsequent SQL SELECT statements.
         '''
         
-        if isinstance(order_by, str):
+        if isinstance(order_by, (int, str)):
             order_by = [order_by]
         self.order_by = order_by
 
@@ -191,7 +191,7 @@ class DataTable(object):
             group_by = 'group by %s' % ', '.join(self.group_by)
         order_by = ''
         if self.order_by:
-            order_by = 'order by %s' % ', '.join(self.order_by)
+            order_by = 'order by %s' % ', '.join(map(str, self.order_by))
         limit = ''
         if self.limit is not None:
             limit = 'limit %s' % self.limit
