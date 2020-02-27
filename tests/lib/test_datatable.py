@@ -53,8 +53,9 @@ class TestDataTable(unittest.TestCase):
         for old, new in zip(expected, results):
             self.assertDictEqual(old, new)
 
-    def test_getTableSelect(self):
+    def test_getTable(self):
         ID = 2
+        CODE = 'biology'
         DATA = ({'code': 'biology'},)
         self.datatable.setColumns(['code'])
         self.datatable.setOrderBy(1)
@@ -68,12 +69,15 @@ class TestDataTable(unittest.TestCase):
         self.datatable.setFilters({'discipline_id': ID})
         self.assertEqual(self.datatable.getTable(), DATA)
 
+        # dict fitler with string value
+        self.datatable.setFilters({'code': CODE})
+        self.assertEqual(self.datatable.getTable(), DATA)
+
         # is NULL filter
         self.datatable.setFilters({'discipline_id': None})
         self.assertNotEqual(self.datatable.getTable(), DATA)
 
         # list of filters
-        CODE = 'biology'
         self.datatable.setFilters(['discipline_id=%s' % ID, 'code="%s"' %CODE])
         self.assertEqual(self.datatable.getTable(), DATA)
 
@@ -97,7 +101,12 @@ class TestDataTable(unittest.TestCase):
         self.datatable.setGroupBy('first')
         self.assertEqual(self.datatable.getTable(), DATA)
 
-    def test_getTable_Insert_Delete(self):
+    def test_get(self):
+        ID = 2
+        results = self.datatable.get('discipline_id=%s' % ID)
+        self.assertEqual(results[0]['discipline_id'], ID)
+        
+    def test_insertRow_deleteRows(self):
         DATA = {'discipline_id': 100,
                 'code': 'computers',
                 'name': 'Computers',
@@ -111,3 +120,18 @@ class TestDataTable(unittest.TestCase):
         # delete
         self.datatable.deleteRows()
         self.assertEqual(self.datatable.getTable(), ())
+
+    def test_updateRows(self):
+        CODE = 'biology'
+        DATA = {'active': 0}
+        DATA2 = {'active': 1}
+
+        # update
+        self.datatable.setFilters('code = "%s"' % CODE)
+        self.datatable.updateRows(DATA)        
+        self.datatable.setColumns('active')
+        self.assertEqual(self.datatable.getTable(), (DATA,))
+
+        # update it back
+        self.datatable.updateRows(DATA2)
+        self.assertEqual(self.datatable.getTable(), (DATA2,))
