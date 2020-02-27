@@ -53,3 +53,61 @@ class TestDataTable(unittest.TestCase):
         for old, new in zip(expected, results):
             self.assertDictEqual(old, new)
 
+    def test_getTableSelect(self):
+        ID = 2
+        DATA = ({'code': 'biology'},)
+        self.datatable.setColumns(['code'])
+        self.datatable.setOrderBy(1)
+        self.datatable.setLimit(10)
+
+        # string filter
+        self.datatable.setFilters('discipline_id=%s' % ID)
+        self.assertEqual(self.datatable.getTable(), DATA)
+
+        # dict filter
+        self.datatable.setFilters({'discipline_id': ID})
+        self.assertEqual(self.datatable.getTable(), DATA)
+
+        # is NULL filter
+        self.datatable.setFilters({'discipline_id': None})
+        self.assertNotEqual(self.datatable.getTable(), DATA)
+
+        # list of filters
+        CODE = 'biology'
+        self.datatable.setFilters(['discipline_id=%s' % ID, 'code="%s"' %CODE])
+        self.assertEqual(self.datatable.getTable(), DATA)
+
+        # is in
+        IDS = [2,4]
+        DATA = ({'code': 'biology'},{'code': 'chemistry'})
+        self.datatable.setFilters('discipline_id=%s' % ID)
+        self.datatable.setFilters({'discipline_id': IDS})
+        self.assertEqual(self.datatable.getTable(), DATA)
+
+        # group by - int
+        IDS = [2,4,5]
+        DATA = ({'first': 'B', 'count': 1}, {'first': 'C', 'count': 2})
+        self.datatable.setColumns(['left(name, 1) as first',
+                                   'count(*) as count'])
+        self.datatable.setFilters({'discipline_id': IDS})
+        self.datatable.setGroupBy(1)
+        self.assertEqual(self.datatable.getTable(), DATA)
+
+        # group by - string
+        self.datatable.setGroupBy('first')
+        self.assertEqual(self.datatable.getTable(), DATA)
+
+    def test_getTable_Insert_Delete(self):
+        DATA = {'discipline_id': 100,
+                'code': 'computers',
+                'name': 'Computers',
+                'active': 0}
+        # insert
+        self.datatable.insertRow(DATA)
+        self.datatable.setColumns(DATA.keys())
+        self.datatable.setFilters('code = "%s"' % DATA['code'])
+        self.assertEqual(self.datatable.getTable(), (DATA,))
+
+        # delete
+        self.datatable.deleteRows()
+        self.assertEqual(self.datatable.getTable(), ())
