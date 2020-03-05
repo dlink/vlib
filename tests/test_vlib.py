@@ -10,6 +10,7 @@ from lib.test_conf import TestConf
 from lib.test_datarecord import TestDataRecord
 from lib.test_datatable import TestDataTable
 from lib.test_db import TestDb
+from lib.test_elapsetime import TestElapseTime
 from lib.test_entities import TestEntities
 from lib.test_odict import TestOdict
 from lib.test_sqlutils import TestSqlUtils
@@ -19,7 +20,7 @@ from lib.test_utils import TestUtils
 DEBUG = 0
 
 TEST_NAMES = ('All', 'Attribute', 'Conf', 'DataTable', 'DataRecord', 'Db',
-              'Entities', 'Odict', 'Shell', 'Utils', 'SqlUtils')
+              'ElapseTime', 'Entities', 'Odict', 'Shell', 'Utils', 'SqlUtils')
 
 def syntax():
     progname = os.path.basename(sys.argv[0])
