@@ -14,12 +14,14 @@ def toEntity(text):
             text2 += char_ref
         elif c == '<':
             text2 += '&lt;'
+        elif c == '>':
+            text2 += '&gt;'
         elif c == '&':
             text2 += '&amp;'
         else:
             text2 += c
     return text2
-
+"""
 def toEntity0(text):
     '''Obsolete.  See toEntity'''
     entities = {'\u00a0': '&#xa0;'  ,  # 
@@ -84,6 +86,7 @@ def toEntity0(text):
     #for k,v in entities.items():
     #    text = re.sub(k, v, text, 100)
     #return text
+"""
 
 #def utf8(text):
 #    return text.encode('utf-8')
