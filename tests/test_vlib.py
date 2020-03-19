@@ -6,6 +6,7 @@ import unittest
 import sys
 
 from lib.test_attribute import TestAttribute
+from lib.test_cli import TestCli
 from lib.test_conf import TestConf
 from lib.test_datarecord import TestDataRecord
 from lib.test_datatable import TestDataTable
@@ -19,8 +20,9 @@ from lib.test_utils import TestUtils
 
 DEBUG = 0
 
-TEST_NAMES = ('All', 'Attribute', 'Conf', 'DataTable', 'DataRecord', 'Db',
-              'ElapseTime', 'Entities', 'Odict', 'Shell', 'Utils', 'SqlUtils')
+TEST_NAMES = ('All', 'Attribute', 'Cli', 'Conf', 'DataTable', 'DataRecord',
+              'Db', 'ElapseTime', 'Entities', 'Odict', 'Shell', 'Utils',
+              'SqlUtils')
 
 def syntax():
     progname = os.path.basename(sys.argv[0])
