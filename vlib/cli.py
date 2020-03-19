@@ -34,6 +34,7 @@ class CLI(object):
         self.commands = commands
         self.options = options
         self.hasoption = {}
+        self.return_not_exit = 0
         if 'v' not in self.options:
             self.options['v'] = 'Verbose'
         if 'q' not in self.options:
@@ -41,7 +42,7 @@ class CLI(object):
 
         self.verbose = False
 
-    def process(self):
+    def process(self, return_not_exit=0):
         '''Process Command Line Arguments
            
            call process_method(**args)
@@ -68,7 +69,7 @@ class CLI(object):
                 self.hasoption[opt] = False
 
         if not args:
-            self.syntax()
+            self.syntax(return_not_exit=return_not_exit)
 
         retcode = 0
         try:
@@ -81,9 +82,13 @@ class CLI(object):
 
         if not self.hasoption.get('q'):
             print_pretty(results)
+
+        if return_not_exit:
+            return retcode
+
         sys.exit(retcode)
 
-    def syntax(self, emsg=None):
+    def syntax(self, emsg=None, return_not_exit=0):
         prog = os.path.basename(sys.argv[0])
         if emsg:
             print(emsg)
@@ -100,6 +105,8 @@ class CLI(object):
         for o, desc in list(self.options.items()):
             print('%s -%s: %s' % (' '*len(prog), o, desc))
         print()
+        if return_not_exit:
+            return 1
         sys.exit(1)
 
     def are_you_sure(self, msg=None):
