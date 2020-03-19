@@ -42,6 +42,10 @@ II SET ENVIRONMENT
       $ export PYTHONPATH=$PWD/../vlib
       $ export VCONF=$PWD/testconf.yml
 
-II. Run test
+III. Run test
 
    $ ./test_vlib.py All   # With no args for help
+
+IV. Test Coverage
+
+   See coverage.rc file
