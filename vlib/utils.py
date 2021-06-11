@@ -103,6 +103,8 @@ def format_datetime(d, with_seconds=False, format=None):
     try:
         if format == 'ISO8601':
             return d.strftime("%Y-%m-%dT%H:%M:%S-05:00")
+        elif format == 'RFC-2822':
+            return d.strftime('%a, %d %b %Y %H:%M:%S -0500') # zone=EST
         elif with_seconds:
             return d.strftime("%m/%d/%Y %I:%M:%S %p").lower()
         else:
