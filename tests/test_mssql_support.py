@@ -8,9 +8,9 @@ import db
 conf_ = conf.getInstance()
 db_ = db.getInstance()
 engine = conf_['database']['engine']
-print engine
+print(engine)
 if engine == 'mysql':
     r = db_.query('SELECT * FROM customers limit 1')
 else:
     r = db_.query('SELECT top(1) * FROM address')
-print r
+print(r)

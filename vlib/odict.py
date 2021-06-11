@@ -24,8 +24,8 @@ class odict(dict):
 if __name__ == '__main__':
     #o = odict({'a':1, 2:3})
     o = odict(a=1, b=2)
-    print o
-    print o.a
+    print(o)
+    print(o.a)
     o.b = 4
-    print o['b']
-    print o
+    print(o['b'])
+    print(o)

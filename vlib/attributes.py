@@ -36,7 +36,7 @@ class Attributes (DataTable):
             id = self.code_map[code.lower()]
         except:
             if not or_add:
-                raise AttributeNotFoundError(
+                raise AttributesDataNotFoundError(
                     "%s: code '%s' not found" % (self.tablename, code))
             else:
                 # add rec
@@ -76,7 +76,7 @@ class Attributes (DataTable):
         '''Return a list of columns values,
            Where column is a column name in the table.
         '''
-        return [self.table[x][column] for x in self._table.keys()]
+        return [self.table[x][column] for x in list(self._table.keys())]
 
     def _loadTable (self):
         '''Loads database table.
@@ -110,7 +110,7 @@ class Attributes (DataTable):
         '''Set up constants like states.INPROGRESS, states.ERROR, etc.,
            or roles.USER, roles.AUTHOR, etc.,
            based on the table's code field.                                                      '''
-        for id, data in self.table.items():
+        for id, data in list(self.table.items()):
             self.__setattr__(data['code'].upper(), id)
 
     def getColumnValue (self, id, column):
@@ -170,15 +170,15 @@ def plural2singular(name):
        eq. boats --> boat
            parties --> party
     '''
+    # spec. cases
+    if name == 'statuses':
+        return 'status'
+
     name2 = name
 
     # ies --> y
     if name[-3:] == 'ies':
         name2 = name[0:-3] + 'y'
-
-    # statuses -> status
-    elif name[-2:] == 'es':
-        name2 = name[0:-2]
 
     # boats --> boat
     # access --> access (no change)
@@ -192,9 +192,9 @@ def test():
     states = Attributes(db.getInstance(),
                             'usage_time_frames',
                             'id')
-    print 'List:', states.list
-    print 'Code Map:', states.code_map
-    print 'Name Map:',states.name_map
+    print('List:', states.list)
+    print('Code Map:', states.code_map)
+    print('Name Map:',states.name_map)
 
 if __name__ == '__main__':
     test()

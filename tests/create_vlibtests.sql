@@ -37,6 +37,7 @@ insert into vlibtests.disciplines (discipline_id, code, name, description, activ
 insert into vlibtests.disciplines (discipline_id, code, name, description, active) values (16, 'psychology', 'Psychology', '', 1);
 insert into vlibtests.disciplines (discipline_id, code, name, description, active) values (17, 'sociology', 'Sociology', '', 1);
 insert into vlibtests.disciplines (discipline_id, code, name, description, active) values (18, 'general_business', 'General Business', '', 1);
+insert into vlibtests.disciplines (discipline_id, code, name, description, active) values (19, 'alchemy', 'Alchemy', '', 0);
 
 create table vlibtests.books (
   book_id integer unsigned     not null auto_increment primary key,

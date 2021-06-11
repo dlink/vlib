@@ -11,11 +11,10 @@ I. INITIAL SET UP
    Like this:
      $ mysql
      mysql> create database vlibtests;
-     mysql> grant all on vlibtests.* to vlibtests@localhost 
-         ->    identified by 'bogangles';
+     mysql> create user vlibtests@localhost identified by 'Swordfish#100';
+     mysql> grant all on vlibtests.* to vlibtests@localhost;
      mysql> quit
-     $ cat create_vlibtests.sql | mysql -uvlibtests -pbogangles vlibtests
-
+     $ cat create_vlibtests.sql | mysql -uvlibtests -p vlibtests
 
    B. Load Mysql Timezones if necessary.
 
@@ -43,6 +42,10 @@ II SET ENVIRONMENT
       $ export PYTHONPATH=$PWD/../vlib
       $ export VCONF=$PWD/testconf.yml
 
-II. Run test
+III. Run test
 
-   $ ./test_vlibs.py All   # With no args for help
+   $ ./test_vlib.py All   # With no args for help
+
+IV. Test Coverage
+
+   See coverage.rc file

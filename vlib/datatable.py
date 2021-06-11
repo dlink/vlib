@@ -59,7 +59,7 @@ class DataTable(object):
             if not WRITEBACK: myDataTable.setWriteBack(0)
         '''
         if self.debug:
-            print __name__, self.tablename, "setWriteBack (%s)" % switch
+            print(__name__, self.tablename, "setWriteBack (%s)" % switch)
         self.writeback = switch
 
     def describe(self):
@@ -94,13 +94,13 @@ class DataTable(object):
                   dobj.setFilters ({'name': ['Fred', 'foo', 'bar']})
         '''
 
-        if isinstance(filters, (str, unicode)):
+        if isinstance(filters, str):
             #string
             new_filters = [filters]
         elif isinstance(filters, dict):
             #dict
             new_filters = []
-            for k, v in filters.items():
+            for k, v in list(filters.items()):
                 if v is None:
                     new_filters.append("%s is null" % k)
                 elif isinstance(v, list):
@@ -118,7 +118,7 @@ class DataTable(object):
         subsequent SQL SELECT statements.
         '''
         
-        if isinstance(order_by, str):
+        if isinstance(order_by, (int, str)):
             order_by = [order_by]
         self.order_by = order_by
 
@@ -168,7 +168,7 @@ class DataTable(object):
               { 'name': 'Barbara', 'color': 'blue'} ]
         '''
         
-        if self.debug: print __name__, self.tablename, "getTable ()"
+        if self.debug: print(__name__, self.tablename, "getTable ()")
         
         table = self.db.query(self._getSQL())
         return table
@@ -191,13 +191,13 @@ class DataTable(object):
             group_by = 'group by %s' % ', '.join(self.group_by)
         order_by = ''
         if self.order_by:
-            order_by = 'order by %s' % ', '.join(self.order_by)
+            order_by = 'order by %s' % ', '.join(map(str, self.order_by))
         limit = ''
         if self.limit is not None:
             limit = 'limit %s' % self.limit
         sql = '%s %s %s %s %s %s' % (select, From, where, group_by, order_by, 
                                      limit)
-        if self.debug_sql: print __name__, self.tablename, "SQL:\n ", sql
+        if self.debug_sql: print(__name__, self.tablename, "SQL:\n ", sql)
         return sql;
 
 
@@ -223,11 +223,11 @@ class DataTable(object):
 
         sql_cmd = 'insert'
         if replace_cmd: sql_cmd = 'replace'
-        if DEBUG: print __name__, self.tablename, '%sRow()' % sql_cmd
+        if DEBUG: print(__name__, self.tablename, '%sRow()' % sql_cmd)
         if len(record) < 1:
             raise DataTableError ('Record to insert is blank')
 
-        columns, values = zip(*record.items())
+        columns, values = list(zip(*list(record.items())))
         sql = "%s into %s (%s) values (%s)" % (
             sql_cmd,
             self.tablename,
@@ -237,17 +237,17 @@ class DataTable(object):
         )
 
         if self.debug_sql:
-            print __name__, self.tablename, "SQL:\n ", sql, values
+            print(__name__, self.tablename, "SQL:\n ", sql, values)
         id = 0
         try:
             if self.writeback:
                 self.db.execute(sql, params=values)
                 id = self.db.lastrowid    # MySQLdb 1.2.1
 
-        except Exception, e:
+        except Exception as e:
             type, value, traceback = sys.exc_info()
             msg = "Unable to insert row into %s: %r" % (self.tablename, e)
-            raise DataTableError, (msg, type, value), traceback
+            raise DataTableError(msg, type, value).with_traceback(traceback)
         return id
 
     def updateRows (self, record):
@@ -269,7 +269,7 @@ class DataTable(object):
         '''
         
         if self.debug:
-            print __name__, self.tablename, "updateRows (%s)" % record
+            print(__name__, self.tablename, "updateRows (%s)" % record)
         if len(record) < 1:
             raise DataTableError ('Record to insert is blank')
 
@@ -278,8 +278,8 @@ class DataTable(object):
         # We need the values in the same order as the keys later on, so
         # solidify the order of the elements now and use values for the
         # parameter binding later.
-        record_items = record.items()
-        columns, values = zip(*record_items)
+        record_items = list(record.items())
+        columns, values = list(zip(*record_items))
         for column, value in record_items:
             # Create a PDO template for parameter binding.
             setters.append("%s = %%s" % column)
@@ -298,8 +298,8 @@ class DataTable(object):
             where)
 
         if self.debug_sql:
-            sql_with_vals = sql % tuple(map(lambda x: "'%s'" % x, values))
-            print __name__, self.tablename, "SQL:\n ", sql_with_vals
+            sql_with_vals = sql % tuple(["'%s'" % x for x in values])
+            print(__name__, self.tablename, "SQL:\n ", sql_with_vals)
         rowcount = 0
         try:
             if self.writeback:
@@ -307,7 +307,7 @@ class DataTable(object):
                 rowcount = self.db.rowcount
                 #if self.autocommit:
                 #    self.db.commit()
-        except Exception, e:
+        except Exception as e:
             raise DataTableError (
                 "Unable to update row into %s: %s" % (self.tablename, e))
         return rowcount
@@ -329,7 +329,7 @@ class DataTable(object):
         '''
         
         if self.debug:
-            print __name__, self.tablename, "deleteRows ()"
+            print(__name__, self.tablename, "deleteRows ()")
 
         where  = ''
         if self.filters:
@@ -342,7 +342,7 @@ class DataTable(object):
             self.tablename,
             where)
 
-        if self.debug_sql: print __name__, self.tablename, "SQL:\n ", sql
+        if self.debug_sql: print(__name__, self.tablename, "SQL:\n ", sql)
         rowcount = 0
         try:
             if self.writeback:
@@ -350,7 +350,7 @@ class DataTable(object):
                 rowcount = self.db.rowcount
                 #if self.autocommit:
                 #    self.db.commit()
-        except Exception, e:
+        except Exception as e:
             raise DataTableError (
                 "Unable to delete row from %s: %s" % (self.tablename, e))
         return rowcount
@@ -364,7 +364,7 @@ class DataTable(object):
         
         try:
             table = self.db.query('show columns from %s' % self.tablename)
-        except Exception, e:
+        except Exception as e:
             raise DataTableError(e)
 
         #$table_alias = self.getAlias() - table alias to come
@@ -395,7 +395,7 @@ def sqlize(s):
     '''Change single quotes to two single quotes.
     This makes strings with single quotes in them suitable for
     insertion into sql databases.'''
-    if isinstance(s, (str, unicode)):
+    if isinstance(s, str):
         #s = s.encode('latin-1','replace').replace("'", "''")
         s = s.replace("'", "''")
         s = s.replace('\\', '\\\\')

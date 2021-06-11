@@ -30,8 +30,8 @@ def test():
     s1 = S()
     s2 = S()
     
-    print "id(s1) =", id(s1)
-    print "id(s2) =", id(s2)
+    print("id(s1) =", id(s1))
+    print("id(s2) =", id(s2))
 
 if __name__ == "__main__":
     test()

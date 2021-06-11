@@ -28,7 +28,7 @@ class Shell(object):
 
     def cmd(self, cmd):
         if self.echo_cmd:
-            print "Shell.cmd: %s" % cmd
+            print("Shell.cmd: %s" % cmd)
         if self.dry_run:
             return ''
 

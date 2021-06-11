@@ -1,6 +1,6 @@
 import os
-import conf
-import singleton
+from . import conf
+from . import singleton
 
 DEBUG = 0
 DEBUG_SQL = 0
@@ -45,7 +45,7 @@ class Db (object):
 
     def connect(self, params):
         if DEBUG:
-            print 'db:connect(%s)' % params
+            print('db:connect(%s)' % params)
         self.close()
         self.engine = engine = params['engine']
 
@@ -108,7 +108,7 @@ class Db (object):
 
     def _execute(self, sql, params=None):
         if self.debug_sql: 
-            print "SQL:", sql, params
+            print("SQL:", sql, params)
         try:
             rv = self.cursor.execute(sql, params)
             if self.engine != 'mssql':
@@ -116,13 +116,13 @@ class Db (object):
                 self.lastrowid_store = self.cursor.lastrowid
             self.rowcount_store = self.cursor.rowcount
             return rv
-        except self.dbApi.OperationalError, e:
+        except self.dbApi.OperationalError as e:
             self.connect(self.params)
             self.open_cursor()
             rv = self.cursor.execute(sql, params)
             self.lastrowid_store = self.cursor.lastrowid
             return rv
-        except Exception, e:
+        except Exception as e:
             raise
         
     def query(self, sql, from_trans=False, params=None):
@@ -184,7 +184,7 @@ class Db (object):
     
     def __del__(self):
         if DEBUG:
-            print "db.__del__()"
+            print("db.__del__()")
         self.close()
 
 class Factory(object):
@@ -197,7 +197,7 @@ class SingletonFactory(object):
     '''Factory class for providing unique Db class instances.'''
 
     def __init__(self):
-        if DEBUG: print "Factory.__init__()"
+        if DEBUG: print("Factory.__init__()")
         self._instances = {}
         
     def create(self, **params):
@@ -209,24 +209,24 @@ class SingletonFactory(object):
             params = conf.Factory.create().data['database']
 
         if DEBUG:
-            print "Factory.create(params={\n%s})"  % params
+            print("Factory.create(params={\n%s})"  % params)
             
         # db connection signature:
         signature = "%(engine)s:%(host)s:%(db)s:%(user)s:" \
             "%(dictcursor)s" % params
         if DEBUG: 
-            print "Db.Factory: signature = %s" % signature,
+            print("Db.Factory: signature = %s" % signature, end=' ')
 
         # already instantiated?
         if signature in self._instances:
             if DEBUG:
-                print "Already instantiated."
+                print("Already instantiated.")
             return self._instances[signature]
 
         db_ = Db(params)
         self._instances[signature] = db_
         if DEBUG: 
-            print "Created."
+            print("Created.")
         return db_
 
 # Use this instance to create singleton Db instances:

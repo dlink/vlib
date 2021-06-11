@@ -4,7 +4,6 @@ import os
 from datetime import datetime
 
 from functools import update_wrapper
-from colors import *
 
 class MissingArguments(Exception): pass
 
@@ -55,71 +54,6 @@ def console_width():
     # sensible default
     return 80
 
-def echoif(switch):
-    '''Decorator - calls echoized
-       eq.:
-         @echoif(DEBUG_CALLSTACK)
-         class OrderPricing(objec):
-            ...
-    '''
-    if switch:
-        return echoized
-    return lambda unchanged: unchanged
-
-
-def echoized(func_or_cls):
-    """Decorator
-       Echos a function's signature prior to evaluating it, of does the
-        same for all methods of a class. 
-
-        ISSUES:
-          If used on a single method of a class, it fails to identify the
-          arg names, and self is not distinguished from other args.
-          
-          (or in conjunction with @cached)
-          
-        eq.:
-          op = OrderPricing()
-          op = echoized(OrderPricing)()
-
-          e = Editions(nid=nid)
-          e = echoized(Editions)(nid=nid)
-    """
-    from inspect import getargspec, isclass, ismethod
-    def newf(*args, **kwds):
-        'Echos function signature'
-        try:
-            spec = getargspec(f)
-        except Exception, e:
-            spec = getargspec(f.__call__)
-        sargs = list(args)
-        cls = ''
-        # pull the class name in front for instance and class methods
-        if spec.args:       
-            arg0 = spec.args.pop(0)
-            if arg0 == 'self':
-                cls = sargs.pop(0).__class__.__name__
-            elif arg0 == 'cls':
-                cls = sargs.pop(0).__name__
-        s = ['%s=%s' % (sa, a) for sa, a in zip(spec.args, sargs)]
-        s.extend(map(str, sargs[len(spec.args):]))           # *args
-        s.extend('%s=%s' % (k, v) for k, v in kwds.items())  # **kwds
-        print colorcall((f.__name__, cls), *s)
-        return f(*args, **kwds)
-    # if class, add echoizing to all methods in class
-    if isclass(func_or_cls):
-        cls = func_or_cls
-        for name in cls.__dict__:
-            item = getattr(cls, name)
-            if ismethod(item) or hasattr(item, '__call__'):
-                setattr(cls, name, echoized(item))
-        return cls
-    f = func_or_cls
-    if f.__doc__:
-        newf.__doc__ = '\n'.join([f.__doc__, newf.__doc__])
-    # use new composite docstring instead of just orig func's
-    return update_wrapper(newf, f, assigned=('__module__', '__name__'))
-
 def uniqueId(with_millisec=False):
     """Return system time to the millisec as set of numbers"""
     d = str(datetime.now())
@@ -144,7 +78,7 @@ def str2datetime(s, format="%Y-%m-%d %H:%M:%S"):
         s += ' 00:00:00'
     try:
         return datetime.strptime(s, format)
-    except Exception, e:
+    except Exception as e:
         raise Str2DateError('Unable to convert "%s" to datetime: %s: %s'
                             % (s, e.__class__.__name__, e))
 
@@ -154,8 +88,8 @@ def str2date(s):
     """
     from datetime import date
     try:
-        return date(*map(int, (s[0:4], s[5:7], s[8:10])))
-    except Exception, e:
+        return date(*list(map(int, (s[0:4], s[5:7], s[8:10]))))
+    except Exception as e:
         raise Str2DateError('Unable to convert "%s" to datetime: %s: %s'
                             % (s, e.__class__.__name__, e))
 
@@ -175,7 +109,7 @@ def format_datetime(d, with_seconds=False, format=None):
             return d.strftime("%m/%d/%Y %I:%M:%S %p").lower()
         else:
             return d.strftime("%m/%d/%Y %I:%M %p").lower()
-    except Exception, e:
+    except Exception as e:
         return d
 
 def format_date(d):
@@ -219,7 +153,7 @@ def formatdict(d, width=console_width(), indent=0, keylen=0, color=False):
         lightcyan(v) if isinstance(v, (int, bool, type(None))) or \
         str(v).isdigit() else darkcyan(v)
     
-    keys, values = d.keys(), d.values()
+    keys, values = list(d.keys()), list(d.values())
     key_lens = [len(str(k)) for k in keys]
     val_lens = [len(str(v)) for v in values]
     if not keylen:
@@ -348,7 +282,7 @@ def list2csv(data):
     for row in data:
         row2 = []
         for c in row:
-            if isinstance(c, basestring) and any_in(',"\'', c):
+            if isinstance(c, str) and any_in(',"\'', c):
                 # put quotes on strings
                 row2.append('"%s"' % c)
             else:
@@ -393,8 +327,8 @@ def rev_move(src, dst, max_revs=20, copy=False, debug=False):
 
     # debug
     if debug:
-        print "src:", src
-        print "dst:", dst
+        print("src:", src)
+        print("dst:", dst)
     if not os.path.exists(src):
         raise Exception('utils.revmove: Source %s does not exist' % src)
 
@@ -403,7 +337,7 @@ def rev_move(src, dst, max_revs=20, copy=False, debug=False):
         import re
         ddirname = os.path.dirname(dst)
         dname    = os.path.basename(dst)
-        pattern = re.compile(u'%s(_(\d+)$|$)' % dname)
+        pattern = re.compile('%s(_(\d+)$|$)' % dname)
 
         # gather up all the name and name_n files:
         revfiles = {}
@@ -417,7 +351,7 @@ def rev_move(src, dst, max_revs=20, copy=False, debug=False):
                 else:
                     # purge files with revs greater than max_revs:
                     killfile = "%s/%s" % (ddirname, file)
-                    if debug: print 'killing file: %s' % killfile
+                    if debug: print('killing file: %s' % killfile)
                     if os.path.isdir(killfile):
                         shutil.rmtree(killfile)
                     else:
@@ -425,25 +359,25 @@ def rev_move(src, dst, max_revs=20, copy=False, debug=False):
 
         # move them to new revs:
         file_base = dname + '_'
-        for i in sorted(revfiles.keys(), reverse=True):
+        for i in sorted(list(revfiles.keys()), reverse=True):
             j = int(i) + 1 if i else 1
             oldfile = "%s/%s" % (ddirname, revfiles[i])
             newfile = "%s/%s_%s" % (ddirname, dname, j)
             if debug:
-                print "move %s %s" % (oldfile, newfile)
+                print("move %s %s" % (oldfile, newfile))
             try:
                 shutil.copy2(oldfile, newfile)
-            except Exception, e:
+            except Exception as e:
                 shutil.copyfile(oldfile, newfile)
     if debug:
         cmd = 'copy' if copy else 'move'
-        print "%s %s %s" % (cmd, src, dst)
+        print("%s %s %s" % (cmd, src, dst))
 
     if os.path.abspath(src) == os.path.abspath(dst):
         return
     try:
         shutil.copy2(src, dst)
-    except Exception, e:
+    except Exception as e:
         shutil.copyfile(src, dst)
     if not copy:
         os.remove(src)
@@ -457,6 +391,6 @@ def is_int(s):
         return False
 
 def strip_html(html):
-    if isinstance(html, (str, unicode)):
+    if isinstance(html, str):
         import re
         return re.sub('<[^>]*>', '', html).strip()

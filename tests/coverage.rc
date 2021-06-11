@@ -1,0 +1,19 @@
+# Test Code Coverage Configuration File
+# 
+# How To:
+#
+#   run tests:
+#      coverage run --source=../vlib -m test_vlib All
+#
+#   get report:
+#      coverage report --rcfile=coverage.rc -m
+#
+
+[report]
+
+exclude_lines =
+    if __name__ == .__main__.
+    if self.debug
+    if self.writeback
+    def test()
+    class Test()

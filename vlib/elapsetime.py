@@ -71,26 +71,26 @@ class ElapseTime(object):
             (I wish locals() could be included automatically) '''
         s = self.seconds
         for t in range(tries):
-            exec stmt in context
+            exec(stmt, context)
         return self.seconds - s
     
     
 def test():
     e = ElapseTime()
     e = ElapseTime(2)
-    print e.seconds
-    print e.ms
+    print(e.seconds)
+    print(e.ms)
     time.sleep(2)
-    print e.seconds
-    print e.ms
+    print(e.seconds)
+    print(e.ms)
     while True:
         if e.timeout:
-            print "hit timeout"
-            print e.seconds
+            print("hit timeout")
+            print(e.seconds)
             break
     def fib(n): return 1 if n < 3 else fib(n - 1) + fib(n - 2)
-    print e.timeit('fib(24)', locals())
-    print "done"
+    print(e.timeit('fib(24)', locals()))
+    print("done")
 
     
 if __name__ == "__main__":

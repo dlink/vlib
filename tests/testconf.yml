@@ -6,7 +6,7 @@ database:
    host: localhost
    db: vlibtests
    user: vlibtests
-   passwd: bogangles
+   passwd: Swordfish#100
    dictcursor: true
    timezone: America/New_York
 
