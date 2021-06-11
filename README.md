@@ -1,4 +1,4 @@
-NOTICE: This the Python 2.7 version of this libary.  This version is deprecated and no longer supported, as of 06/2021.
+NOTICE: This is the Python 2.7 version of this libary.  This version is deprecated and no longer supported, as of 06/2021.
 
 Python Application Development - Core Library Classes
 
