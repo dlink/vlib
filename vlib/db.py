@@ -57,19 +57,17 @@ class Db (object):
         # Create connection:
 
         if engine == 'mysql':
-            import MySQLdb
-            self.dbApi = MySQLdb
-            self.connection = MySQLdb.connect(
-                host    = params["host"],
-                user    = params["user"],
-                passwd  = passwd,
-                db      = params["db"],
-                port    = int(params.get('port', MYSQL_PORT)),
-                charset = "utf8")
+            import pymysql.cursors
+            self.connection = pymysql.connect(
+                host     = params["host"],
+                user     = params["user"],
+                password = passwd,
+                database = params["db"],
+                cursorclass=pymysql.cursors.DictCursor
+            )
 
         elif engine == 'mssql':
             import pymssql
-            self.dbApi = pymssql
             self.connection = pymssql.connect(
                 server   = params["host"],
                 user     = params["user"],
@@ -95,11 +93,12 @@ class Db (object):
         # anew, otherwise this self variable will cause great trouble.
         self.close_cursor()
         if self.engine == 'mysql':
-            self.cursor = self.connection.cursor(self.dbApi.cursors.DictCursor)
+            self.cursor = self.connection.cursor()
         else:
             self.cursor = self.connection.cursor(as_dict=True)
         if self.engine != 'mssql' and 'timezone' in self.params:
-            self.cursor.execute("set time_zone = '%s'" % self.params['timezone'])
+            self.cursor.execute("set time_zone = '%s'"
+                                % self.params['timezone'])
 
     def close_cursor(self):
         if self.cursor:
@@ -109,21 +108,13 @@ class Db (object):
     def _execute(self, sql, params=None):
         if self.debug_sql: 
             print("SQL:", sql, params)
-        try:
-            rv = self.cursor.execute(sql, params)
-            if self.engine != 'mssql':
-                # not working for mssql for some reason
-                self.lastrowid_store = self.cursor.lastrowid
-            self.rowcount_store = self.cursor.rowcount
-            return rv
-        except self.dbApi.OperationalError as e:
-            self.connect(self.params)
-            self.open_cursor()
-            rv = self.cursor.execute(sql, params)
+
+        rv = self.cursor.execute(sql, params)
+        if self.engine != 'mssql':
+            # not working for mssql for some reason
             self.lastrowid_store = self.cursor.lastrowid
-            return rv
-        except Exception as e:
-            raise
+        self.rowcount_store = self.cursor.rowcount
+        return rv
         
     def query(self, sql, from_trans=False, params=None):
         '''Use query for SQL statements that return data
@@ -172,7 +163,7 @@ class Db (object):
     def close(self):
         self.close_cursor()
         if self.connection: 
-                self.connection.close()
+            self.connection.close()
 
     @property
     def lastrowid(self):

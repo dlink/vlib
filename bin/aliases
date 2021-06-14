@@ -1,0 +1,4 @@
+v=$HOME/vlib ; alias v='cd $v'
+vb=$v/bin    ; alias vb='cd $vb'
+vv=$v/vlib   ; alias vv='cd $vv'
+vt=$v/tests  ; alias vt='cd $vt'
