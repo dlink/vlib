@@ -56,7 +56,7 @@ class TestDataTable(unittest.TestCase):
     def test_getTable(self):
         ID = 2
         CODE = 'biology'
-        DATA = ({'code': 'biology'},)
+        DATA = [{'code': 'biology'}]
         self.datatable.setColumns(['code'])
         self.datatable.setOrderBy(1)
         self.datatable.setLimit(10)
@@ -83,14 +83,14 @@ class TestDataTable(unittest.TestCase):
 
         # is in
         IDS = [2,4]
-        DATA = ({'code': 'biology'},{'code': 'chemistry'})
+        DATA = [{'code': 'biology'},{'code': 'chemistry'}]
         self.datatable.setFilters('discipline_id=%s' % ID)
         self.datatable.setFilters({'discipline_id': IDS})
         self.assertEqual(self.datatable.getTable(), DATA)
 
         # group by - int
         IDS = [2,4,5]
-        DATA = ({'first': 'B', 'count': 1}, {'first': 'C', 'count': 2})
+        DATA = [{'first': 'B', 'count': 1}, {'first': 'C', 'count': 2}]
         self.datatable.setColumns(['left(name, 1) as first',
                                    'count(*) as count'])
         self.datatable.setFilters({'discipline_id': IDS})
@@ -115,7 +115,7 @@ class TestDataTable(unittest.TestCase):
         self.datatable.insertRow(DATA)
         self.datatable.setColumns(DATA.keys())
         self.datatable.setFilters('code = "%s"' % DATA['code'])
-        self.assertEqual(self.datatable.getTable(), (DATA,))
+        self.assertEqual(self.datatable.getTable(), [DATA])
 
         # delete
         self.datatable.deleteRows()
@@ -130,8 +130,8 @@ class TestDataTable(unittest.TestCase):
         self.datatable.setFilters('code = "%s"' % CODE)
         self.datatable.updateRows(DATA)        
         self.datatable.setColumns('active')
-        self.assertEqual(self.datatable.getTable(), (DATA,))
+        self.assertEqual(self.datatable.getTable(), [DATA])
 
         # update it back
         self.datatable.updateRows(DATA2)
-        self.assertEqual(self.datatable.getTable(), (DATA2,))
+        self.assertEqual(self.datatable.getTable(), [DATA2])
