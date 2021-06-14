@@ -1,4 +1,5 @@
-*.pyc
+__pycache__
+.python_version
+.venv
 .idea/*
-*.egg-info/*
 .coverage
