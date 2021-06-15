@@ -1,5 +1,11 @@
 Release Notes - vlib
 ====================
+
+v2.0.0
+------
+* Ported to Python 3
+* Chagnes for PyPi Build and upload
+
 v1.3.2
 ------
 03/24/2017
