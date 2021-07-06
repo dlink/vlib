@@ -345,7 +345,7 @@ def rev_move(src, dst, max_revs=20, copy=False, debug=False):
             match = pattern.match(file)
             if match:
                 num = match.group(2)
-                num = int(num) if num else None
+                num = int(num) if num else 0
                 if num < max_revs and max_revs != 0:
                     revfiles[num] = file
                 else:
