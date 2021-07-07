@@ -1,4 +1,7 @@
 import os
+
+import pymysql
+
 from . import conf
 from . import singleton
 
@@ -57,7 +60,6 @@ class Db (object):
         # Create connection:
 
         if engine == 'mysql':
-            import pymysql.cursors
             self.connection = pymysql.connect(
                 host     = params["host"],
                 user     = params["user"],
@@ -109,7 +111,15 @@ class Db (object):
         if self.debug_sql: 
             print("SQL:", sql, params)
 
-        rv = self.cursor.execute(sql, params)
+        try:
+            rv = self.cursor.execute(sql, params)
+        except pymysql.err.OperationalError as e:
+            # connection can close down after 8hrs
+            print('%s: Reconnecting ...' % e)
+            self.connect(self.params)
+            self.open_cursor()
+            rv = self.cursor.execute(sql, params)
+
         if self.engine != 'mssql':
             # not working for mssql for some reason
             self.lastrowid_store = self.cursor.lastrowid
