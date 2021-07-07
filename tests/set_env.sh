@@ -1,2 +1,2 @@
 export VCONF=$PWD/testconf.yml
-export PYTHONPATH=$PWD/..
+export PYTHONPATH=$PWD/../src
