@@ -1,5 +1,13 @@
 Release Notes - vlib
 ====================
+v2.0.2
+------
+* Added vlib.__version__
+* Updated dependeny libraries
+
+v2.0.1
+------
+* Replaced OdictError with AttributeError
 
 v2.0.0
 ------
