@@ -56,6 +56,10 @@ def getLogger(name, logfile=None):
     logger = logging.getLogger(name)
     logger.setLevel(level)
 
+    # this logger already setup?
+    if logger.hasHandlers():
+        return logger
+
     # create dir if nec.
     dirname = os.path.dirname(logfile)
     if not os.path.exists(dirname):
