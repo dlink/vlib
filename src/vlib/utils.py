@@ -283,6 +283,10 @@ def list2csv(data):
         row2 = []
         for c in row:
             if isinstance(c, str) and any_in(',"\'', c):
+                # double up quotes
+                if '"' in c:
+                    import re
+                    c = re.sub('"', '""', c)
                 # put quotes on strings
                 row2.append('"%s"' % c)
             else:
