@@ -208,13 +208,11 @@ class SingletonFactory(object):
         '''
         if not params:  # default to config settings
             params = conf.Factory.create().data['database']
-
         if DEBUG:
             print("Factory.create(params={\n%s})"  % params)
             
         # db connection signature:
-        signature = "%(engine)s:%(host)s:%(db)s:%(user)s:" \
-            "%(dictcursor)s" % params
+        signature = "%(engine)s:%(host)s:%(db)s:%(user)s:" % params
         if DEBUG: 
             print("Db.Factory: signature = %s" % signature, end=' ')
 
