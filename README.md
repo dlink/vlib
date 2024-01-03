@@ -221,7 +221,7 @@ The above outputs to the log:
 
 ### Object Dictionary
 
-The **odict** class is syntactic sugar for dealing with dictionaries and nested dictionaries. It privides dot (.) sytax, as well as flower brace ({}) and square braces ([]) syntax
+The **odict** class is syntactic sugar for dealing with dictionaries and nested dictionaries. It privides dot (.) syntax, as well as flower brace ({}) and square braces ([]) syntax
 
     attr['color'] = 'blue' # normal dict
 
