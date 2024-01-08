@@ -106,9 +106,9 @@ def format_datetime(d, with_seconds=False, format=None):
         elif format == 'RFC-2822':
             return d.strftime('%a, %d %b %Y %H:%M:%S -0500') # zone=EST
         elif with_seconds:
-            return d.strftime("%m/%d/%Y %I:%M:%S %p").lower()
+            return d.strftime("%m/%d/%y %I:%M:%S %p").lower()
         else:
-            return d.strftime("%m/%d/%Y %I:%M %p").lower()
+            return d.strftime("%m/%d/%y %I:%M %p").lower()
     except Exception as e:
         return d
 
@@ -116,7 +116,7 @@ def format_date(d):
     '''Given a datetime object
     Return a string in the form of "mm/dd/yyyy"
     '''
-    return d.strftime("%m/%d/%Y")
+    return d.strftime("%m/%d/%y")
 
 def table2csv(data):    
     '''Give a LIST or TUPLE
