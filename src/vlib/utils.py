@@ -391,7 +391,7 @@ def is_int(s):
     try:
         int(s)
         return True
-    except ValueError:
+    except (TypeError, ValueError):
         return False
 
 def strip_html(html):
