@@ -17,6 +17,8 @@ class DataRecord(DataTable):
 
            id column can also be an sql where clause, like
                'order_no="TC-100903401"'
+           or id can be a dict, like
+               {'order_no': 'TC-100903401"', ...}
 
            Meant to be subclassed, as follows:
 
@@ -51,11 +53,13 @@ class DataRecord(DataTable):
              message.id
              message.created
         '''
+        # id can be an int, a dict, or a str
         if is_int(self.id):
             filter = '%s=%s' % (self.primary_key, self.id)
+        elif isinstance(self.id, dict):
+            filter = ' and '.join([f'{k}="{v}"' for k, v in self.id.items()])
         else:
-            # id is an sql where_clause
-            filter = self.id
+            filter = self.id # ie 'username="dlink"'
 
         self.setFilters(filter)
         results = self.getTable()
