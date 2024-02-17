@@ -1,6 +1,9 @@
 import re
 import sys
 import types
+from copy import copy
+from vlib.odict import odict
+from vlib.utils import lazyproperty
 
 DEBUG = 0
 DEBUG_SQL = 0
@@ -11,12 +14,16 @@ class DataTableError (Exception): pass
 class DataTable(object):
     '''Database table abstraction Layer
     '''
+    def __init__ (self, db, tablename, recordObj=None):
+        '''Instantiate a DataTable, given a db connection and table name
 
-    def __init__ (self, db, tablename):
-        '''Instantiate a DataTable.
+           if recordObj given, then get() returns list of recordObjs
+              recordObjs, like DataRecord, have a constructor
+              that takes a record id.
         '''
         self.db = db
         self.tablename = tablename
+        self.recordObj = recordObj
 
         #self.autocommit = autocommit
 
@@ -33,7 +40,7 @@ class DataTable(object):
     #   '''Turn autocommit on (1) or off (0). Default is on.  See __init__()'''
     #    self.autocommit = state
     
-    @property
+    @lazyproperty
     def table_columns(self):
         return [x['Field'] for x in self.db.query('desc %s' % self.tablename)]
 
@@ -66,7 +73,6 @@ class DataTable(object):
         '''Return output of SQL Describe command as a Dict'''
         return self.db.query('desc %s' % self.tablename)
 
-        
     def setColumns (self, columns):
         '''Set User defined column list to be used SELECT CLAUSE of
         subsequent SQL statements.
@@ -135,18 +141,38 @@ class DataTable(object):
     def setLimit (self, limit):
         '''Set value of LIMIT CLAUSE in subsequent SQL SELECT statements.'''
         self.limit = limit
-        
-    def get(self, filter=None):
-        '''Given an optional SQL filter, or None for All
-           Return rows.  (See getTable())
+
+    def get(self, filters=None, sort_order=None, show_inactives=0):
+        '''Given fitlers and/or sort_order
+           Returns a list of odicts or recordObjs if recordObj given
+           To use recordOdj primary key must be 'id'
+
+           Add fitler active=1 if field exists, unless show_inactives=1
         '''
-        o = []
+        filters2 = copy(filters)
+
+        # add active=1 filter
+        if 'active' in self.table_columns and not show_inactives:
+            if filters2 is None:             filters2 = {'active': 1}
+            elif isinstance(filters2, str):  filters2 += ' and active = 1'
+            elif isinstance(filters2, dict): filters2['active'] = 1
+            elif isinstance(filters2, list): filters2.append('active = 1')
+            else:
+                raise VDataTableError(f'Unhandled filter case {type(filter)} '
+                                      f'for show_inactives=0')
+        self.setFilters(filters2)
+        self.setOrderBy(sort_order)
+
+        # return list of recordObjs
+        if self.recordObj and 'id' in self.table_columns:
+            all = []
+            for rec in self:
+                all.append(self.recordObj(rec['id']))
+            return all
+
+        # return list of odicts
         self.setColumns('*')
-        if filter:
-            self.setFilters(filter)
-        else:
-            self.setFilters('1')
-        return self.getTable()
+        return list(map(odict, self.getTable()))
 
     def getTable (self):
         '''Performs an SQL SELECT statement. 
@@ -169,9 +195,12 @@ class DataTable(object):
         '''
         
         if self.debug: print(__name__, self.tablename, "getTable ()")
-        
+
         table = self.db.query(self._getSQL())
         return table
+
+    def __iter__(self):
+       return self.getTable().__iter__()
 
     def _getSQL (self):
         '''Build SQL statement based on values of columns, filters, etc.
