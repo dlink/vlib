@@ -64,12 +64,12 @@ g,h,i'''
     def test_format_datetime(self):
         d = datetime(2013,11,22,10,9,8)
         self.assertEqual(vlib.utils.format_datetime(d),
-                         '11/22/2013 10:09 am')
+                         '11/22/13 10:09 am')
 
     def test_format_datetime_with_sections(self):
         d = datetime(2013,11,22,10,9,8)
         self.assertEqual(vlib.utils.format_datetime(d, with_seconds=1),
-                         '11/22/2013 10:09:08 am')
+                         '11/22/13 10:09:08 am')
 
     def test_format_datetime_ISO8601(self):
         d = datetime(2013,11,22,10,9,8)
