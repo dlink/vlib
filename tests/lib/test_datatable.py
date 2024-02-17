@@ -84,7 +84,6 @@ class TestDataTable(unittest.TestCase):
         # is in
         IDS = [2,4]
         DATA = [{'code': 'biology'},{'code': 'chemistry'}]
-        self.datatable.setFilters('discipline_id=%s' % ID)
         self.datatable.setFilters({'discipline_id': IDS})
         self.assertEqual(self.datatable.getTable(), DATA)
 
