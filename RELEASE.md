@@ -1,16 +1,41 @@
 Release Notes - vlib
 ====================
+v2.1.0
+------
+01/18/2024
+
+* Conf: now using 'open with'
+* DataRecord: Added update() method
+* DataRecord: Now also accepts dict filter for input
+* Db: changed signature to not include dictcursor - it is the default
+* Utils: format_datetime, and format_date: changed from 4 digit year to 2
+* Utils: is_int: can handle dictionaries too
+* Utils: list2csv: deal with double quotes(") in csv
+
+v2.0.3
+------
+11/22/2021
+
+* Logger: avoid dup handlers, and duplicate log entries
+* CLI: shebang line fix
+
 v2.0.2
 ------
+10/06/2021
+
 * Added vlib.__version__
 * Updated dependeny libraries
 
 v2.0.1
 ------
+08/03/2021
+
 * Replaced OdictError with AttributeError
 
 v2.0.0
 ------
+07/07/2021
+
 * Ported to Python 3
 * Chagnes for PyPi Build and upload
 
