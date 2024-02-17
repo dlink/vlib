@@ -7,37 +7,37 @@
 -- grant all on vlibtests.* to vlibtests@localhost identified by 'bogangles';
 
 create table vlibtests.disciplines (
-    discipline_id   int(10)         unsigned not null,
+    id              integer unsigned not null primary key,
     code            varchar(30)     not null,
     name            varchar(45)     not null,
     description     varchar(255)    default null,
-    active          int(10)         unsigned not null,
+    active          boolean         default 1,
+
     last_updated    timestamp       not null default current_timestamp on update current_timestamp,
-    primary         key             (discipline_id),
     key             state_codes     (code)
 )
 engine=InnoDB;
 
-insert into vlibtests.disciplines (discipline_id, code, name, description, active) values (0, 'unknown', 'Unknown', '', 1);
-insert into vlibtests.disciplines (discipline_id, code, name, description, active) values (1, 'accounting', 'Accounting and Tax', '', 1);
-insert into vlibtests.disciplines (discipline_id, code, name, description, active) values (2, 'biology', 'Biology', '', 1);
-insert into vlibtests.disciplines (discipline_id, code, name, description, active) values (3, 'business_law', 'Business Law', '', 1);
-insert into vlibtests.disciplines (discipline_id, code, name, description, active) values (4, 'chemistry', 'Chemistry', '', 1);
-insert into vlibtests.disciplines (discipline_id, code, name, description, active) values (5, 'communications', 'Communications', '', 1);
-insert into vlibtests.disciplines (discipline_id, code, name, description, active) values (6, 'economics', 'Economics', '', 1);
-insert into vlibtests.disciplines (discipline_id, code, name, description, active) values (7, 'english', 'English', '', 1);
-insert into vlibtests.disciplines (discipline_id, code, name, description, active) values (8, 'finance', 'Finance', '', 1);
-insert into vlibtests.disciplines (discipline_id, code, name, description, active) values (9, 'business', 'General Business', '', 1);
-insert into vlibtests.disciplines (discipline_id, code, name, description, active) values (10, 'geosciences', 'Geosciences', '', 1);
-insert into vlibtests.disciplines (discipline_id, code, name, description, active) values (11, 'information_systems', 'Information Systems', '', 1);
-insert into vlibtests.disciplines (discipline_id, code, name, description, active) values (12, 'management', 'Management', '', 1);
-insert into vlibtests.disciplines (discipline_id, code, name, description, active) values (13, 'marketing', 'Marketing', '', 1);
-insert into vlibtests.disciplines (discipline_id, code, name, description, active) values (14, 'mathematics', 'Mathematics', '', 1);
-insert into vlibtests.disciplines (discipline_id, code, name, description, active) values (15, 'science', 'Professional and Applied Sciences', '', 1);
-insert into vlibtests.disciplines (discipline_id, code, name, description, active) values (16, 'psychology', 'Psychology', '', 1);
-insert into vlibtests.disciplines (discipline_id, code, name, description, active) values (17, 'sociology', 'Sociology', '', 1);
-insert into vlibtests.disciplines (discipline_id, code, name, description, active) values (18, 'general_business', 'General Business', '', 1);
-insert into vlibtests.disciplines (discipline_id, code, name, description, active) values (19, 'alchemy', 'Alchemy', '', 0);
+insert into vlibtests.disciplines (id, code, name, description, active) values (0, 'unknown', 'Unknown', '', 1);
+insert into vlibtests.disciplines (id, code, name, description, active) values (1, 'accounting', 'Accounting and Tax', '', 1);
+insert into vlibtests.disciplines (id, code, name, description, active) values (2, 'biology', 'Biology', '', 1);
+insert into vlibtests.disciplines (id, code, name, description, active) values (3, 'business_law', 'Business Law', '', 1);
+insert into vlibtests.disciplines (id, code, name, description, active) values (4, 'chemistry', 'Chemistry', '', 1);
+insert into vlibtests.disciplines (id, code, name, description, active) values (5, 'communications', 'Communications', '', 1);
+insert into vlibtests.disciplines (id, code, name, description, active) values (6, 'economics', 'Economics', '', 1);
+insert into vlibtests.disciplines (id, code, name, description, active) values (7, 'english', 'English', '', 1);
+insert into vlibtests.disciplines (id, code, name, description, active) values (8, 'finance', 'Finance', '', 1);
+insert into vlibtests.disciplines (id, code, name, description, active) values (9, 'business', 'General Business', '', 1);
+insert into vlibtests.disciplines (id, code, name, description, active) values (10, 'geosciences', 'Geosciences', '', 1);
+insert into vlibtests.disciplines (id, code, name, description, active) values (11, 'information_systems', 'Information Systems', '', 1);
+insert into vlibtests.disciplines (id, code, name, description, active) values (12, 'management', 'Management', '', 1);
+insert into vlibtests.disciplines (id, code, name, description, active) values (13, 'marketing', 'Marketing', '', 1);
+insert into vlibtests.disciplines (id, code, name, description, active) values (14, 'mathematics', 'Mathematics', '', 1);
+insert into vlibtests.disciplines (id, code, name, description, active) values (15, 'science', 'Professional and Applied Sciences', '', 1);
+insert into vlibtests.disciplines (id, code, name, description, active) values (16, 'psychology', 'Psychology', '', 1);
+insert into vlibtests.disciplines (id, code, name, description, active) values (17, 'sociology', 'Sociology', '', 1);
+insert into vlibtests.disciplines (id, code, name, description, active) values (18, 'general_business', 'General Business', '', 1);
+insert into vlibtests.disciplines (id, code, name, description, active) values (19, 'alchemy', 'Alchemy', '', 0);
 
 create table vlibtests.books (
   book_id integer unsigned     not null auto_increment primary key,
@@ -52,7 +52,7 @@ create table vlibtests.books (
         default current_timestamp on update current_timestamp,
   created datetime         default null,
   unique key book_name (book_name),
-  foreign key (discipline_id)  references disciplines (discipline_id)
+  foreign key (discipline_id)  references disciplines (id)
 ) engine InnoDB;
 show warnings;
 

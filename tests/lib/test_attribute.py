@@ -7,7 +7,8 @@ from vlib.attributes import \
 class TestAttribute(unittest.TestCase):
 
     def setUp(self):
-        self.disciplines = Attributes(db.getInstance(), 'disciplines')
+        self.disciplines = Attributes(db.getInstance(), 'disciplines',
+                                      id_field='id')
 
     def test_getIdFromCode(self):
         ID, CODE = 2, 'biology'
