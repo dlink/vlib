@@ -11,6 +11,8 @@ See Pydocs: http://crowfly.net/pydocs/vlib
    * Database Support
 
    * DataTable Support (an ORM Lite)
+     
+   * DataRecord Support (ORM Lite)
 
    * Logging Support (with email Support)
 
