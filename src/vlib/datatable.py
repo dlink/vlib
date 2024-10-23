@@ -71,7 +71,19 @@ class DataTable(object):
 
     def describe(self):
         '''Return output of SQL Describe command as a Dict'''
-        return self.db.query('desc %s' % self.tablename)
+
+        if self.db.params.engine == 'mysql':
+            sql = f'desc {self.tablename}'
+        elif self.db.params.engine == 'mssql':
+            sql = \
+                "select " \
+                "  column_name as Field, " \
+                "  data_type as Type " \
+                "from " \
+                "  information_schema.columns " \
+                "where " \
+                f"  table_name = '{self.tablename}'"
+        return self.db.query(sql)
 
     def setColumns (self, columns):
         '''Set User defined column list to be used SELECT CLAUSE of
