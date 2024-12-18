@@ -242,10 +242,13 @@ class DataTable(object):
         return sql;
 
 
+    def insertRowOnDupUpdate (self, record):
+        return self.insertRow(record, replace_cmd=0, on_duplicate_update=1)
+
     def replaceRow (self, record):
-        return self.insertRow(record, 1)
+        return self.insertRow(record, replace_cmd=1)
         
-    def insertRow (self, record, replace_cmd = 0):
+    def insertRow (self, record, replace_cmd=0, on_duplicate_update=0):
         '''Performs an SQL INSERT statement.
         (or SQL REPLACE if replace_cmd = 1)
 
@@ -276,6 +279,12 @@ class DataTable(object):
             ', '.join(map(self.sql_quote, columns)),
             ', '.join(['%s'] * len(values)),
         )
+
+        if on_duplicate_update:
+            update_columns = []
+            for c in columns:
+                update_columns.append(f'{c} = values({c})')
+            sql += ' on duplicate key update ' + ', '.join(update_columns)
 
         if self.debug_sql:
             print(__name__, self.tablename, "SQL:\n ", sql, values)

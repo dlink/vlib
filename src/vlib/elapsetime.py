@@ -4,9 +4,9 @@
 
 '''
 
-ElapsedTime
+ElapseTime
 
-This little class is just a nice way to get elapsed time
+This little class is just a nice way to get elapse time
 values in various formats. It's based on the system
 clock so it's accuracy is limited to that at best.
 
@@ -26,9 +26,9 @@ import time
 
 
 class ElapseTime(object):
-    '''This is the elapsed time class definition and defines the behavior 
+    '''This is the elapse time class definition and defines the behavior 
     of the class. As soon as an object of this Class is created the clock is
-    running and elapsed time values can be taken at any time from that point.
+    running and elapse time values can be taken at any time from that point.
     '''
     def __init__(self, timeout=0.0, firstrun=False):
         '''The constructor for the class. Essentially create an object of this
