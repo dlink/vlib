@@ -10,7 +10,7 @@ class Attributes (DataTable):
        +-------------+------------------+------+-----+---------+-------+
        | Field       | Type             | Null | Key | Default | Extra |
        +-------------+------------------+------+-----+---------+-------+
-       | <attr>_id   | int(10) unsigned | NO   | PRI |         |       |
+       | id          | int(10) unsigned | NO   | PRI |         |       |
        | code        | varchar(20)      | NO   |     |         |       |
        | name        | varchar(128)     | NO   |     |         |       |
        | description | varchar(256)     | YES  |     | NULL    |       |
