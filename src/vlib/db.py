@@ -174,6 +174,7 @@ class Db (object):
         self.close_cursor()
         if self.connection: 
             self.connection.close()
+            self.connection = None
 
     @property
     def lastrowid(self):
