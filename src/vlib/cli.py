@@ -75,7 +75,7 @@ class CLI(object):
         try:
             results = self.process_method(*args)
         except Exception as e:
-            if self.hasoption.get('v'):
+            if self.hasoption.get('v') or self.hasoption.get('vv'):
                 raise
             results = "Error: %s: %s" % (e.__class__.__name__, str(e))
             retcode = 100
