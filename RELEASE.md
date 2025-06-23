@@ -1,5 +1,26 @@
 Release Notes - vlib
 ====================
+
+v2.1.1
+------
+03/06/2025
+
+* Attribute: doc update
+* Bump protobuf from 3.18.1 to 3.18.3
+* Bump pymysql from 1.0.2 to 1.1.1
+* CLI: show traceback on error for both -v and -vv
+* Datatable: Support for insertRowOnDupUpdate
+* DataTable: describe() support for mssql db
+* DataTable: get() now skips inactive records, returns recordObjs, can be an iterator
+* Db: set connection to None on close to avoid trying to close again
+* README: Added note about DataRecord
+* RELEASE.md: Updated
+* Tests: Coverage.rc: corrected path
+* Tests: DataTable: code cleanup
+* Tests: Odict: Fixed Error test
+* Tests: Utils: fixed test for 2 digit year in format_dates
+* Tests: changed test database table disciplines primary key from discipline_id to id, for tests with DataTable.get(..., recordObj)
+
 v2.1.0
 ------
 01/18/2024
