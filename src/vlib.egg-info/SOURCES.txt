@@ -21,3 +21,5 @@ src/vlib.egg-info/PKG-INFO
 src/vlib.egg-info/SOURCES.txt
 src/vlib.egg-info/dependency_links.txt
 src/vlib.egg-info/top_level.txt
+tests/test_db.py
+tests/test_vlib.py
