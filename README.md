@@ -2,8 +2,6 @@ Python Application Development - Core Library Classes
 
 Developed over a period of time to address reoccurring requirements for most all applications.  It provides the following modules:
 
-See Pydocs: http://crowfly.net/pydocs/vlib
-
 ## Modules
 
    * Configuration File Support
