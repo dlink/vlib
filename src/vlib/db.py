@@ -65,6 +65,7 @@ class Db (object):
                 user     = params["user"],
                 password = passwd,
                 database = params["db"],
+                port     = params.get('port', MYSQL_PORT),
                 cursorclass=pymysql.cursors.DictCursor
             )
 
