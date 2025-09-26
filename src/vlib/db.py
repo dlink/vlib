@@ -59,6 +59,11 @@ class Db (object):
 
         # Create connection:
 
+        ssl_ca = params.get('ssl_ca')
+        ssl_args = None
+        if ssl_ca:
+            ssl_args = {'ca': ssl_ca, 'check_hostname': True}
+
         if engine == 'mysql':
             self.connection = pymysql.connect(
                 host     = params["host"],
@@ -66,6 +71,7 @@ class Db (object):
                 password = passwd,
                 database = params["db"],
                 port     = params.get('port', MYSQL_PORT),
+                ssl      = ssl_args,
                 cursorclass=pymysql.cursors.DictCursor
             )
 
