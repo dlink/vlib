@@ -1,6 +1,13 @@
 Release Notes - vlib
 ====================
 
+v2.2.0
+------
+09/26/2026
+
+* Db: support for ssl_ca connection parameter
+* Db: support for port
+
 v2.1.1
 ------
 03/06/2025
