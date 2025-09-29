@@ -57,7 +57,7 @@ class DataRecord(DataTable):
         if is_int(self.id):
             filter = '%s=%s' % (self.primary_key, self.id)
         elif isinstance(self.id, dict):
-            filter = ' and '.join([f'{k}="{v}"' for k, v in self.id.items()])
+            filter = ' and '.join([f"{k}='{v}'" for k, v in self.id.items()])
         else:
             filter = self.id # ie 'username="dlink"'
 
