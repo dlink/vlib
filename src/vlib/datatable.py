@@ -36,10 +36,13 @@ class DataTable(object):
         self.debug_sql = DEBUG_SQL
         self.writeback = WRITEBACK
 
+    def __repr__(self):
+        return f'<DataTable:{self.db}.{self.tablename}>'
+
     #def setAutocommit (self, state):
     #   '''Turn autocommit on (1) or off (0). Default is on.  See __init__()'''
     #    self.autocommit = state
-    
+
     @lazyproperty
     def table_columns(self):
         return [x['Field'] for x in self.db.query('desc %s' % self.tablename)]
