@@ -16,9 +16,9 @@ class DataRecord(DataTable):
               a vlib.db Object, a table name, and a record Id
 
            id column can also be an sql where clause, like
-               'order_no="TC-100903401"'
+               "order_no='TC-100903401'"
            or id can be a dict, like
-               {'order_no': 'TC-100903401"', ...}
+               {'order_no': 'TC-100903401', ...}
 
            Meant to be subclassed, as follows:
 
