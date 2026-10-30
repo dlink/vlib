@@ -44,6 +44,14 @@ class DataRecord(DataTable):
         self.debug_sql = DEBUG
         self._loadData()
 
+    @classmethod
+    def find(cls, *args, **kwargs):
+        '''Return a record or None when no record matches.'''
+        try:
+            return cls(*args, **kwargs)
+        except DataRecordNotFound:
+            return None
+
     def _loadData(self):
         '''Read a single Db Record and add it to self.__dict__
 

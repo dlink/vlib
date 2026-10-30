@@ -6,6 +6,7 @@ src/vlib/__init__.py
 src/vlib/attributes.py
 src/vlib/cli.py
 src/vlib/conf.py
+src/vlib/csv_data.py
 src/vlib/datarecord.py
 src/vlib/datatable.py
 src/vlib/db.py
