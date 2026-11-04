@@ -72,6 +72,7 @@ class Db (object):
                 database = params["db"],
                 port     = params.get('port', MYSQL_PORT),
                 ssl      = ssl_args,
+                charset     = 'utf8mb4',
                 cursorclass=pymysql.cursors.DictCursor
             )
 
